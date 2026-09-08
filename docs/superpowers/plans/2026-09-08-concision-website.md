@@ -3582,3 +3582,20 @@ In `tools/asset-templates/social-preview.html`, replace the `.mark` image and th
 
 Run: `npm run render-assets && npm run format && npm run lint && npm run format:check && npm run test`
 Expected: PNGs regenerated, all checks pass (unit 37), the header shows the wordmark at 1.75rem on both viewports with the "on" in the logo's teal. Open `public/assets/favicon-512.png` and `social-preview.png` to check the composition: a white mark centred on a teal rounded square, and the full logo (with its own tagline line) above the URL, nothing else. Commit (`feat(brand): swap in the official logo and mark`).
+
+---
+
+## Post-review amendments (2026-09-08)
+
+The final whole-branch review found defects in the spec's Cloudflare assumptions and a few implementation gaps. These were applied in one fix wave after all 15 tasks; the task text above is left as executed, and the spec has been corrected to match.
+
+- `public/_redirects` removed: Cloudflare Pages cannot express a domain-level redirect there. `www` → apex is a zone-level Redirect Rule, added to the README runbook with a verification step; the `_redirects` unit test is gone.
+- Committed public files moved from `public/assets/` to `public/static/` (served from `/static/`) so the year-long `immutable` cache applies only to Vite's hashed bundle under `/assets/`; `/static/*` gets `public, max-age=86400`. Every reference (head partial, header, products, metadata, manifest, tests, render and derive scripts) points at `/static/`.
+- The unused public copy of the full logo is gone; the social preview template reads `branding/concision-logo.svg`.
+- `.product-card__link` uses `--color-primary-strong` (the contrast teal on the muted card surface was 4.44:1); the contrast test now covers `color-primary-contrast` and `color-primary-strong` on `color-surface-muted`, and `color-text-subtle` on `color-primary-tint`.
+- Escape now returns focus to the menu button; the navigation spec asserts it.
+- `public/static/js-flag.js` (classic script in `<head>`) sets the `js` class before first paint; `scripts/main.js` no longer sets it.
+- `@media print` shows revealed sections; `<main>` has `tabindex="-1"`; `og:image:alt` describes the logo and address.
+- New `tests/e2e/headers.spec.js`: `dist/_headers` matches `formatHeadersFile(securityHeaderRules)` after the build, and the served Content-Security-Policy equals the configured one. Layout spec adds 320 and 1920.
+- Selector constants in `contact.spec.js` and `hero.spec.js`.
+- README: runbook steps for creating the repo and authorising Cloudflare's GitHub app, the Redirect Rule, Email Address Obfuscation off, HSTS, a "production differs from preview" section, and a note on `reuseExistingServer`. CLAUDE.md names the full CSP source.

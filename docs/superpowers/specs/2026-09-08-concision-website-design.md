@@ -117,7 +117,6 @@ concision-website/
 │   └── securityHeaders.js       # header rules shared by the build and the preview server
 ├── public/
 │   ├── assets/                  # logos, favicons, social preview (committed, generated where noted)
-│   ├── _redirects
 │   ├── robots.txt
 │   ├── sitemap.xml
 │   └── manifest.json
@@ -169,9 +168,11 @@ The rules:
   Cache-Control: no-cache
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+/static/*
+  Cache-Control: public, max-age=86400
 ```
 
-The two `cloudflareinsights.com` origins exist for Cloudflare Web Analytics, which is enabled in the Pages dashboard and injected at the edge. HSTS and HTTPS upgrades are left to the Cloudflare zone settings (Always Use HTTPS), which is why the CSP carries no `upgrade-insecure-requests`: that directive would also apply to the plain-HTTP preview server the tests run against. `style-src 'self'` means no inline styles anywhere, which is also a project rule.
+The two `cloudflareinsights.com` origins exist for Cloudflare Web Analytics, which is enabled in the Pages dashboard and injected at the edge. HSTS and HTTPS upgrades are left to the Cloudflare zone settings (Always Use HTTPS), which is why the CSP carries no `upgrade-insecure-requests`: that directive would also apply to the plain-HTTP preview server the tests run against. `style-src 'self'` means no inline styles anywhere, which is also a project rule. `/assets/` holds only Vite's content-hashed bundle, so it can be immutable; committed files (logos, icons, the social preview, the JavaScript flag script) live under `public/static/`, are served from `/static/`, and get a one-day cache so a changed logo reaches returning visitors.
 
 ### 4.6 Pages and routing
 
@@ -180,7 +181,7 @@ The two `cloudflareinsights.com` origins exist for Cloudflare Web Analytics, whi
 | `/`         | `index.html`         | Single scrolling page with anchor navigation                          |
 | `/privacy/` | `privacy/index.html` | Directory index so the clean URL works in `vite preview` and on Pages |
 
-Both are build inputs in `vite.config.js` (`build.rolldownOptions.input`; Vite 8 bundles with Rolldown and deprecates `rollupOptions`). `public/_redirects` contains one rule: `https://www.concision.io/* https://concision.io/:splat 301`.
+Both are build inputs in `vite.config.js` (`build.rolldownOptions.input`; Vite 8 bundles with Rolldown and deprecates `rollupOptions`). `www` redirects to the apex through a zone-level Redirect Rule created in the Cloudflare dashboard (Pages `_redirects` files cannot express domain-level redirects), so the repo carries no `_redirects` file.
 
 ### 4.7 JavaScript
 
@@ -188,7 +189,8 @@ JavaScript is progressive enhancement. With it disabled the site is complete: th
 
 - `mobileNav.js`: toggles the menu below 768px, sets `aria-expanded`, closes on link click, on Escape and on resize past the breakpoint.
 - `revealOnScroll.js`: adds `is-visible` to `[data-reveal]` elements when they enter the viewport, using `IntersectionObserver`, once. Does nothing when `prefers-reduced-motion: reduce` matches.
-- `main.js`: imports both and runs them on `DOMContentLoaded`.
+- `main.js`: imports both and runs them as the module executes (module scripts are deferred, so the DOM is already parsed).
+- `public/static/js-flag.js`: a one-line classic script loaded in `<head>` that adds the class `js` to `<html>` before the first paint, so the reveal and menu styles that depend on JavaScript never flash their unenhanced state on a slow connection. The class is also what the CSS gates on; the module does not set it.
 
 No scroll spy and no scroll-linked header effects; the header hairline is always on. The privacy page loads the same entry script; it has no `[data-reveal]` elements, so only the menu has anything to act on.
 
@@ -299,10 +301,10 @@ Clean, minimal, Apple-like. White ground, near-black type, teal as the single ac
 
 ## 7. Assets
 
-- **Company logo.** Supplied by the company as SVG in `branding/`. A copy ships as `public/assets/concision-logo.svg` (and `concision-mark.svg` if an icon-only mark is supplied). Until it arrives the header shows a text wordmark, and the plan includes a swap step.
-- **SVG favicon.** `public/assets/favicon.svg` is the icon-only mark if one is supplied. Otherwise it is a hand-authored teal rounded square with a white "C" in the system font, and it is replaced when a mark arrives.
-- **Nudge logo.** Copied from `nudge-landing-page/public/assets/nudge-logo.svg`.
-- **Generated PNGs.** `tools/render-assets.js` uses Playwright to render `tools/asset-templates/favicon.html` at 180, 192, 256 and 512 pixels and `social-preview.html` at 1200×630, writing into `public/assets/`. The outputs are committed so Cloudflare's build does not need a browser. The script is run by hand when the logo changes and is documented in the README.
+- **Company logo.** Supplied by the company as SVG in `branding/` (`concision-logo.svg`, a wordmark with a tagline line beneath; `concision-mark.svg`, the icon). The header uses `public/static/concision-wordmark.svg`, derived from the logo by `npm run derive-wordmark` (the tagline line is illegible at header size). The full logo is not served; the social preview template reads it from `branding/`.
+- **SVG favicon.** `public/static/favicon.svg` wraps the icon mark, recoloured white, in a rounded square filled with the logo's own teal `#16B3B9` so the icon matches the logo.
+- **Nudge logo.** Copied from `nudge-landing-page/public/assets/nudge-logo.svg` to `public/static/nudge-logo.svg`.
+- **Generated PNGs.** `tools/render-assets.js` uses Playwright to render `tools/asset-templates/favicon.html` at 180, 192, 256 and 512 pixels and `social-preview.html` at 1200×630, writing into `public/static/`. The outputs are committed so Cloudflare's build does not need a browser. The script is run by hand when the logo changes and is documented in the README.
 
 ## 8. Deployment
 
@@ -317,7 +319,9 @@ Clean, minimal, Apple-like. White ground, near-black type, teal as the single ac
 
 - Add `concision.io` and `www.concision.io` as custom domains on the Pages project. Cloudflare creates the DNS records because the zone is already on Cloudflare.
 - Before that, delete the existing redirect rule that sends concision.io to nudgesupport.com, and any placeholder DNS records the redirect relied on, otherwise the custom domain step fails.
-- `_redirects` sends `www` to the apex.
+- A zone-level Redirect Rule (`http.host eq "www.concision.io"` → `concat("https://concision.io", http.request.uri.path)`, 301, query string preserved) sends `www` to the apex.
+- Scrape Shield's Email Address Obfuscation, which Cloudflare enables by default, must be switched off for the zone: it rewrites `mailto:` links and visible addresses in the served HTML, which would strip the contact email the site exists to show.
+- HSTS is enabled in the zone's SSL/TLS settings alongside Always Use HTTPS.
 
 ### 8.3 Runbook
 
