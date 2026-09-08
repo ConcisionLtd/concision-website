@@ -615,6 +615,8 @@ const templateData = {
 };
 
 export default defineConfig({
+  // multi-page site: unknown paths must 404 in dev and preview, as they do on Cloudflare Pages
+  appType: 'mpa',
   plugins: [
     htmlPartials({ data: templateData }),
     cloudflareHeaders({ rules: securityHeaderRules }),
@@ -2800,14 +2802,14 @@ import { siteConfig } from '../../site.config.js';
 
 const SOCIAL_PREVIEW_URL = `${siteConfig.siteUrl}/assets/social-preview.png`;
 const IGNORED_REQUEST_PATHS = ['/favicon.ico'];
-const PUBLIC_FILE_PATHS = [
-  '/assets/favicon.svg',
-  '/assets/favicon-180.png',
-  '/assets/favicon-256.png',
-  '/assets/social-preview.png',
-  '/manifest.json',
-  '/sitemap.xml',
-  '/robots.txt',
+const PUBLIC_FILES = [
+  { path: '/assets/favicon.svg', contentType: /image\/svg\+xml/ },
+  { path: '/assets/favicon-180.png', contentType: /image\/png/ },
+  { path: '/assets/favicon-256.png', contentType: /image\/png/ },
+  { path: '/assets/social-preview.png', contentType: /image\/png/ },
+  { path: '/manifest.json', contentType: /json/ },
+  { path: '/sitemap.xml', contentType: /xml/ },
+  { path: '/robots.txt', contentType: /text\/plain/ },
 ];
 const PAGES = [
   { path: '/', canonical: `${siteConfig.siteUrl}/` },
@@ -2871,10 +2873,13 @@ test('the home page JSON-LD describes the organisation', async ({ page }) => {
   expect(organisation.address.addressCountry).toBe('GB');
 });
 
-test('the icons, manifest, sitemap and robots files are served', async ({ request }) => {
-  for (const filePath of PUBLIC_FILE_PATHS) {
-    const response = await request.get(filePath);
-    expect(response.status(), filePath).toBe(200);
+test('the icons, manifest, sitemap and robots files are served with the right type', async ({
+  request,
+}) => {
+  for (const { path, contentType } of PUBLIC_FILES) {
+    const response = await request.get(path);
+    expect(response.status(), path).toBe(200);
+    expect(response.headers()['content-type'], path).toMatch(contentType);
   }
 });
 ```
