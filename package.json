@@ -14,7 +14,8 @@
     "test:unit": "node --test tests/unit",
     "test:e2e": "playwright test",
     "test": "npm run test:unit && npm run test:e2e",
-    "render-assets": "node tools/render-assets.js"
+    "render-assets": "node tools/render-assets.js",
+    "derive-wordmark": "node tools/derive-wordmark.js"
   },
   "engines": {
     "node": ">=20.19.0"
