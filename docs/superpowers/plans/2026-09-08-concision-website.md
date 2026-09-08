@@ -3308,18 +3308,19 @@ details live once in `site.config.js` and are injected into the HTML at build ti
 
 ## Commands
 
-| Command                 | What it does                                                   |
-| ----------------------- | -------------------------------------------------------------- |
-| `npm run dev`           | Dev server with live reload (partials included)                |
-| `npm run build`         | Production build into `dist/`, including `_headers`            |
-| `npm run preview`       | Serve `dist/` with the production security headers             |
-| `npm run lint`          | ESLint                                                         |
-| `npm run format`        | Prettier, write                                                |
-| `npm run format:check`  | Prettier, check only                                           |
-| `npm run test:unit`     | Node's test runner over `tests/unit`                           |
-| `npm run test:e2e`      | Playwright against a fresh build (desktop and mobile Chromium) |
-| `npm run test`          | Unit then browser tests                                        |
-| `npm run render-assets` | Regenerate the favicon PNGs and the social preview image       |
+| Command                   | What it does                                                   |
+| ------------------------- | -------------------------------------------------------------- |
+| `npm run dev`             | Dev server with live reload (partials included)                |
+| `npm run build`           | Production build into `dist/`, including `_headers`            |
+| `npm run preview`         | Serve `dist/` with the production security headers             |
+| `npm run lint`            | ESLint                                                         |
+| `npm run format`          | Prettier, write                                                |
+| `npm run format:check`    | Prettier, check only                                           |
+| `npm run test:unit`       | Node's test runner over `tests/unit`                           |
+| `npm run test:e2e`        | Playwright against a fresh build (desktop and mobile Chromium) |
+| `npm run test`            | Unit then browser tests                                        |
+| `npm run render-assets`   | Regenerate the favicon PNGs and the social preview image       |
+| `npm run derive-wordmark` | Rebuild the header wordmark SVG from the logo in `branding/`   |
 
 ## Layout
 
@@ -3353,9 +3354,13 @@ tests run under the real policy. Inline styles and inline scripts are not allowe
 
 ## Assets
 
-`public/assets/favicon.svg` is the icon mark. `npm run render-assets` renders it to the PNG
-favicons and composes `social-preview.png` from `tools/asset-templates/social-preview.html`.
-Re-run it, and commit the results, whenever the mark or the social preview template changes.
+`branding/` holds the logo and icon mark supplied by the company. `public/assets/concision-logo.svg`
+is a copy of the logo. `npm run derive-wordmark` writes `public/assets/concision-wordmark.svg`, the
+logo without its tagline line, which the header uses because the tagline is illegible at header
+size. `public/assets/favicon.svg` wraps the icon mark in a teal rounded square. `npm run
+render-assets` renders the favicon to the PNG sizes and composes `social-preview.png` from
+`tools/asset-templates/social-preview.html`. Re-run both, and commit the results, whenever the
+branding files change.
 
 ## Deployment (Cloudflare Pages)
 
@@ -3400,7 +3405,7 @@ runtime dependencies. Spec: `docs/superpowers/specs/2026-09-08-concision-website
 ## Commands
 
 `npm run dev`, `npm run build`, `npm run lint`, `npm run format`, `npm run test:unit`,
-`npm run test:e2e` (builds first), `npm run render-assets`.
+`npm run test:e2e` (builds first), `npm run render-assets`, `npm run derive-wordmark`.
 
 ## Rules
 
@@ -3443,8 +3448,8 @@ Expected: nothing under `node_modules/`, `dist/`, `temp/`, `playwright-report/` 
 
 **Files:**
 
-- Create: `public/assets/concision-logo.svg` (copied), optionally `public/assets/concision-mark.svg`
-- Modify: `partials/site-header.html`, `styles/components/site-header.css`, `public/assets/favicon.svg` (if a mark is supplied), `tools/asset-templates/social-preview.html`
+- Create: `public/assets/concision-logo.svg` (copied), `tools/derive-wordmark.js`, `public/assets/concision-wordmark.svg` (derived), `tests/unit/wordmark.test.js`
+- Modify: `package.json` (script), `partials/site-header.html`, `styles/components/site-header.css`, `public/assets/favicon.svg`, `tools/asset-templates/social-preview.html`
 - Regenerate: the PNGs via `npm run render-assets`
 
 **Interfaces:**
@@ -3456,26 +3461,83 @@ Expected: nothing under `node_modules/`, `dist/`, `temp/`, `playwright-report/` 
 Run: `ls -la branding/ && for f in branding/*.svg; do echo "== $f"; head -c 300 "$f"; echo; done`
 Expected: `branding/concision-logo.svg` (`viewBox="0 0 438 134"`, three paths filled `#16B3B9`, `#757A83` and `#9CA3AF`) and `branding/concision-mark.svg` (`viewBox="0 0 112 80"`, one path filled `#16B3B9`, no background). Both are already in place.
 
-- [ ] **Step 2: Copy the files in**
+- [ ] **Step 2: Copy the logo in and derive the header wordmark**
 
-Run:
+The full logo carries a "CUT THE NONSENSE" line under the wordmark that is illegible at header size, so the header uses a wordmark-only derivative. The wordmark's bounding box in the logo's coordinates is x 4.9 to 430.6, y 1.8 to 66.2; the derived viewBox is `0 0 436 68`. The icon mark is not copied on its own: the favicon embeds its path (Step 4) and `branding/` keeps the source.
 
-```bash
-cp branding/concision-logo.svg public/assets/concision-logo.svg
-cp branding/concision-mark.svg public/assets/concision-mark.svg
+Run: `cp branding/concision-logo.svg public/assets/concision-logo.svg`
+
+Create `tools/derive-wordmark.js`:
+
+```js
+// derives the wordmark-only logo (no tagline line) used in the site header from the supplied logo
+import { readFileSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+
+const SOURCE_PATH = path.resolve(import.meta.dirname, '../branding/concision-logo.svg');
+const OUTPUT_PATH = path.resolve(import.meta.dirname, '../public/assets/concision-wordmark.svg');
+const TAGLINE_FILL = '#9CA3AF';
+const TAGLINE_PATH_PATTERN = new RegExp(`<path[^>]*fill="${TAGLINE_FILL}"[^>]*/>\\s*`);
+const SVG_OPEN_TAG_PATTERN = /<svg[^>]*>/;
+// the wordmark's bounding box in the logo's coordinate space, with a little breathing room
+const WORDMARK_SIZE = { width: 436, height: 68 };
+
+const wordmarkOpenTag = `<svg width="${WORDMARK_SIZE.width}" height="${WORDMARK_SIZE.height}" viewBox="0 0 ${WORDMARK_SIZE.width} ${WORDMARK_SIZE.height}" fill="none" xmlns="http://www.w3.org/2000/svg">`;
+
+const logo = readFileSync(SOURCE_PATH, 'utf8');
+const hasTagline = TAGLINE_PATH_PATTERN.test(logo);
+if (!hasTagline) {
+  throw new Error(`Expected a tagline path filled ${TAGLINE_FILL} in ${SOURCE_PATH}`);
+}
+
+const wordmark = logo
+  .replace(TAGLINE_PATH_PATTERN, '')
+  .replace(SVG_OPEN_TAG_PATTERN, wordmarkOpenTag);
+writeFileSync(OUTPUT_PATH, wordmark);
+console.log(`wrote ${OUTPUT_PATH}`);
 ```
+
+Add `"derive-wordmark": "node tools/derive-wordmark.js"` to the `scripts` in `package.json` after `render-assets`, then run `npm run derive-wordmark`.
+
+Create `tests/unit/wordmark.test.js`:
+
+```js
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+
+const wordmarkPath = path.resolve(
+  import.meta.dirname,
+  '../../public/assets/concision-wordmark.svg'
+);
+const TAGLINE_FILL = '#9CA3AF';
+const WORDMARK_FILLS = ['#757A83', '#16B3B9'];
+
+test('the header wordmark is the logo without its tagline line', () => {
+  const wordmark = readFileSync(wordmarkPath, 'utf8');
+  assert.doesNotMatch(wordmark, new RegExp(TAGLINE_FILL));
+  for (const fill of WORDMARK_FILLS) {
+    assert.match(wordmark, new RegExp(`fill="${fill}"`), `missing wordmark path ${fill}`);
+  }
+  assert.match(wordmark, /viewBox="0 0 436 68"/);
+});
+```
+
+Run: `node --test tests/unit/wordmark.test.js`
+Expected: 1 passing.
 
 - [ ] **Step 3: Replace the wordmark in the header**
 
-In `partials/site-header.html`, replace `<span class="site-header__wordmark">{{ siteName }}</span>` with an image whose `width` and `height` are the SVG's intrinsic size:
+In `partials/site-header.html`, replace `<span class="site-header__wordmark">{{ siteName }}</span>` with an image of the derived wordmark, whose `width` and `height` are its intrinsic size:
 
 ```html
 <img
   class="site-header__logo"
-  src="/assets/concision-logo.svg"
+  src="/assets/concision-wordmark.svg"
   alt="{{ siteName }}"
-  width="438"
-  height="134"
+  width="436"
+  height="68"
 />
 ```
 
@@ -3484,7 +3546,7 @@ In `styles/components/site-header.css`, inside `.site-header__brand`, add:
 ```css
 & .site-header__logo {
   width: auto;
-  height: 2rem;
+  height: 1.75rem;
 }
 ```
 
@@ -3503,7 +3565,7 @@ The mark is not square and has no background, so the favicon wraps it: a rounded
 
 (112×80 placed in 144×144: offsets of 16 and 32 centre it.)
 
-In `tools/asset-templates/social-preview.html`, replace the `.mark` image and the `.wordmark` div with a single image of the full logo, and replace the `.mark` and `.wordmark` rules with one rule for it:
+In `tools/asset-templates/social-preview.html`, replace the `.mark` image and the `.wordmark` div with a single image of the full logo, delete the `.tagline` div (the logo carries the tagline itself), and replace the `.mark`, `.wordmark` and `.tagline` rules with one rule for the logo. The card keeps the logo and the URL:
 
 ```html
 <img class="logo" src="../../public/assets/concision-logo.svg" alt="" />
@@ -3519,4 +3581,4 @@ In `tools/asset-templates/social-preview.html`, replace the `.mark` image and th
 - [ ] **Step 5: Re-render and verify**
 
 Run: `npm run render-assets && npm run format && npm run lint && npm run format:check && npm run test`
-Expected: PNGs regenerated, all checks pass, the header shows the logo on both viewports. Open `public/assets/favicon-512.png` and `social-preview.png` to check the composition: a white mark centred on a teal rounded square, and the full logo above the tagline and URL. Commit (`feat(brand): swap in the official logo and mark`).
+Expected: PNGs regenerated, all checks pass (unit 37), the header shows the wordmark at 1.75rem on both viewports with the "on" in the logo's teal. Open `public/assets/favicon-512.png` and `social-preview.png` to check the composition: a white mark centred on a teal rounded square, and the full logo (with its own tagline line) above the URL, nothing else. Commit (`feat(brand): swap in the official logo and mark`).
