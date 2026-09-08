@@ -31,6 +31,43 @@
           </div>
         </div>
       </section>
+      <section id="products" class="container section" aria-labelledby="products-heading">
+        <div class="section__header">
+          <h2 id="products-heading">Products</h2>
+          <p class="section__lead">Things we make and stand behind.</p>
+        </div>
+        <ul class="product-grid list-reset">
+          <li class="product-card">
+            <h3 class="product-card__name">
+              <img
+                class="product-card__logo"
+                src="/assets/nudge-logo.svg"
+                alt="{{ products.nudge.name }}"
+                width="194"
+                height="32"
+              />
+            </h3>
+            <p class="product-card__tagline">Customer support for small teams.</p>
+            <p>
+              Track questions, feature requests and bugs in one place, without the email threads and
+              spreadsheets.
+            </p>
+            <a class="product-card__link" href="{{ products.nudge.url }}">Visit nudgesupport.com</a>
+          </li>
+          <li class="product-card">
+            <h3 class="product-card__name">
+              <span class="product-card__mark" aria-hidden="true">S</span>
+              <span>{{ products.spends.name }}</span>
+            </h3>
+            <span class="badge">Coming soon to iOS</span>
+            <p class="product-card__tagline">Personal finance by pay period.</p>
+            <p>
+              See how much you will have by the time you are next paid, and where your money goes
+              each month.
+            </p>
+          </li>
+        </ul>
+      </section>
     </main>
     <!-- @include partials/site-footer.html -->
     <script type="module" src="/scripts/main.js"></script>

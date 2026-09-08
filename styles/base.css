@@ -1,6 +1,7 @@
 @import url(variables.css);
 @import url(components/site-header.css);
 @import url(components/hero.css);
+@import url(components/products.css);
 
 /***** reset and document *****/
 html {
