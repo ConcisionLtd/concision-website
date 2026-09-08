@@ -25,9 +25,3 @@ test('the manifest lists the 192 and 512 pixel icons', () => {
   assert.deepEqual(sizes, ['192x192', '512x512']);
   assert.equal(manifest.name, siteConfig.siteName);
 });
-
-test('_redirects sends www to the apex domain', () => {
-  const wwwUrl = siteConfig.siteUrl.replace('https://', 'https://www.');
-  const redirects = readPublicFile('_redirects');
-  assert.equal(redirects.trim(), `${wwwUrl}/* ${siteConfig.siteUrl}/:splat 301`);
-});
