@@ -28,7 +28,8 @@ export const initRevealOnScroll = () => {
   }, OBSERVER_OPTIONS);
 
   elements.forEach((element) => {
-    if (isInViewport(element)) {
+    const elementIsInViewport = isInViewport(element);
+    if (elementIsInViewport) {
       reveal(element);
     } else {
       observer.observe(element);
