@@ -24,6 +24,7 @@ export default defineConfig({
       input: {
         home: resolve(import.meta.dirname, 'index.html'),
         privacy: resolve(import.meta.dirname, 'privacy/index.html'),
+        notFound: resolve(import.meta.dirname, '404.html'),
       },
     },
   },

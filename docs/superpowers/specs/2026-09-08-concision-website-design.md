@@ -176,10 +176,11 @@ The two `cloudflareinsights.com` origins exist for Cloudflare Web Analytics, whi
 
 ### 4.6 Pages and routing
 
-| URL         | Source               | Notes                                                                 |
-| ----------- | -------------------- | --------------------------------------------------------------------- |
-| `/`         | `index.html`         | Single scrolling page with anchor navigation                          |
-| `/privacy/` | `privacy/index.html` | Directory index so the clean URL works in `vite preview` and on Pages |
+| URL           | Source               | Notes                                                                                                |
+| ------------- | -------------------- | ---------------------------------------------------------------------------------------------------- |
+| `/`           | `index.html`         | Single scrolling page with anchor navigation                                                         |
+| `/privacy/`   | `privacy/index.html` | Directory index so the clean URL works in `vite preview` and on Pages                                |
+| unknown paths | `404.html`           | Served by Pages with a 404 status; a short not-found page in the hero style, `noindex`, linking home |
 
 Both are build inputs in `vite.config.js` (`build.rolldownOptions.input`; Vite 8 bundles with Rolldown and deprecates `rollupOptions`). `www` redirects to the apex through a zone-level Redirect Rule created in the Cloudflare dashboard (Pages `_redirects` files cannot express domain-level redirects), so the repo carries no `_redirects` file.
 

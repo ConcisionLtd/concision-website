@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { siteConfig } from '../../site.config.js';
 
-const PAGE_PATHS = ['/', '/privacy/'];
+const PAGE_PATHS = ['/', '/privacy/', '/404.html'];
 
 // the legal details must be in the shipped HTML, so these run with JavaScript off
 test.use({ javaScriptEnabled: false });

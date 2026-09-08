@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page not found | {{ siteName }}</title>
+    <meta name="description" content="That page does not exist on the {{ siteName }} website." />
+    <meta name="robots" content="noindex" />
+    <!-- @include partials/head-shared.html -->
+  </head>
+  <body>
+    <!-- @include partials/site-header.html -->
+    <main id="main" class="page-main" tabindex="-1">
+      <section class="container hero" aria-labelledby="not-found-heading">
+        <div class="hero__content">
+          <h1 id="not-found-heading" class="hero__title">
+            Page not found<span class="hero__accent">.</span>
+          </h1>
+          <div class="hero__intro">
+            <p class="hero__lead">
+              That page <strong>doesn't exist</strong>. The link may be old, or there may be a typo
+              in the address.
+            </p>
+            <p class="hero__lead">Everything we have is on the home page.</p>
+          </div>
+          <div class="hero__actions">
+            <a class="button button--primary" href="/">Go to the home page</a>
+            <a class="button button--secondary" href="/#contact">Get in touch</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- @include partials/site-footer.html -->
+    <script type="module" src="/scripts/main.js"></script>
+  </body>
+</html>

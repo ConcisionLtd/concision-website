@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const PAGE_PATHS = ['/', '/privacy/'];
+const PAGE_PATHS = ['/', '/privacy/', '/404.html'];
 const VIEWPORTS = [
   { width: 320, height: 568 },
   { width: 375, height: 812 },
