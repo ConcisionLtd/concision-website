@@ -9,6 +9,63 @@
       content="{{ company.tradingName }} is an independent software studio in {{ company.baseCity }}. We build focused products and web applications, and help businesses cut the nonsense out of their software."
     />
     <link rel="canonical" href="{{ siteUrl }}/" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- open graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{ siteName }}" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:url" content="{{ siteUrl }}/" />
+    <meta
+      property="og:title"
+      content="{{ siteName }} | Software studio in {{ company.baseCity }}, UK"
+    />
+    <meta
+      property="og:description"
+      content="Focused products and web applications from an independent software studio in {{ company.baseCity }}."
+    />
+    <meta property="og:image" content="{{ siteUrl }}/assets/social-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="{{ siteName }} wordmark and tagline" />
+
+    <!-- twitter card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="{{ siteName }} | Software studio in {{ company.baseCity }}, UK"
+    />
+    <meta
+      name="twitter:description"
+      content="Focused products and web applications from an independent software studio in {{ company.baseCity }}."
+    />
+    <meta name="twitter:image" content="{{ siteUrl }}/assets/social-preview.png" />
+    <meta name="twitter:image:alt" content="{{ siteName }} wordmark and tagline" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "{{ company.tradingName }}",
+        "legalName": "{{ company.legalName }}",
+        "url": "{{ siteUrl }}",
+        "logo": "{{ siteUrl }}/assets/favicon-512.png",
+        "email": "{{ contactEmail }}",
+        "foundingDate": "{{ company.foundingDate }}",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "{{ company.registeredOffice.line1 }}, {{ company.registeredOffice.line2 }}",
+          "addressLocality": "{{ company.registeredOffice.city }}",
+          "postalCode": "{{ company.registeredOffice.postcode }}",
+          "addressCountry": "GB"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "propertyID": "UK company number",
+          "value": "{{ company.number }}"
+        }
+      }
+    </script>
     <!-- @include partials/head-shared.html -->
   </head>
   <body>

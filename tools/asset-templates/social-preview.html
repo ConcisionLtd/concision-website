@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Social preview render template</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        background: #ffffff;
+        font-family:
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 32px;
+        box-sizing: border-box;
+        height: 100%;
+        padding: 0 96px;
+      }
+
+      .mark {
+        width: 112px;
+        height: 112px;
+      }
+
+      .wordmark {
+        color: #1d1d1f;
+        font-size: 96px;
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+
+      .tagline {
+        color: #424245;
+        font-size: 36px;
+      }
+
+      .url {
+        color: #6e6e73;
+        font-size: 28px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <img class="mark" src="../../public/assets/favicon.svg" alt="" />
+      <div class="wordmark">Concision</div>
+      <div class="tagline">Software that cuts the nonsense.</div>
+      <div class="url">concision.io</div>
+    </div>
+  </body>
+</html>
