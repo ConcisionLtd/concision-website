@@ -7,6 +7,7 @@
 @import url(components/contact.css);
 @import url(components/site-footer.css);
 @import url(components/reveal.css);
+@import url(components/prose.css);
 
 /***** reset and document *****/
 html {

@@ -15,7 +15,104 @@
     <!-- @include partials/site-header.html -->
     <main id="main" class="page-main">
       <article class="container prose">
-        <h1>Privacy notice</h1>
+        <div class="prose__intro">
+          <h1>Privacy notice</h1>
+          <p class="prose__meta">Last updated 8 September 2026</p>
+        </div>
+
+        <section class="prose__section">
+          <h2>Who we are</h2>
+          <p>
+            {{ company.legalName }} ("we", "us") runs this website at {{ siteUrl }}. We are
+            registered in {{ company.registeredIn }}, company number {{ company.number }}. Our
+            registered office is {{ company.registeredOffice.line1 }}, {{
+            company.registeredOffice.line2 }}, {{ company.registeredOffice.city }}, {{
+            company.registeredOffice.postcode }}, {{ company.registeredOffice.country }}. You can
+            reach us at
+            <a href="mailto:{{ contactEmail }}">{{ contactEmail }}</a>.
+          </p>
+        </section>
+
+        <section class="prose__section">
+          <h2>What this notice covers</h2>
+          <p>
+            This notice covers the {{ siteName }} website only. Our products, such as {{
+            products.nudge.name }}, have their own privacy notices that apply when you use them.
+          </p>
+        </section>
+
+        <section class="prose__section">
+          <h2>What we collect and why</h2>
+          <p>We keep this site simple, and that goes for data too.</p>
+          <ul>
+            <li>
+              <strong>Analytics.</strong> We use Cloudflare Web Analytics to understand how many
+              people visit and which pages they read. It does not use cookies, does not fingerprint
+              your device and only gives us aggregated figures. We cannot identify you from it.
+            </li>
+            <li>
+              <strong>Hosting and security logs.</strong> The site is served by Cloudflare. Like any
+              host, Cloudflare processes technical information such as your IP address, browser type
+              and the pages you request in order to deliver the site and protect it from abuse.
+              Cloudflare holds these logs briefly under its own privacy policy.
+            </li>
+            <li>
+              <strong>Email.</strong> If you email us we receive your name, your email address and
+              whatever you write. We use it only to reply and to deal with what you asked. We keep
+              it for as long as that takes, and for a reasonable period afterwards in case you come
+              back to us.
+            </li>
+          </ul>
+          <p>
+            Our legal basis for all of this is our legitimate interest in running a website, keeping
+            it secure and answering the people who contact us.
+          </p>
+        </section>
+
+        <section class="prose__section">
+          <h2>Cookies</h2>
+          <p>This site sets no cookies.</p>
+        </section>
+
+        <section class="prose__section">
+          <h2>Who we share it with</h2>
+          <p>
+            Cloudflare, Inc. hosts the site and provides the analytics. Our email provider stores
+            the messages you send us. We do not sell your information and we do not use it for
+            advertising.
+          </p>
+        </section>
+
+        <section class="prose__section">
+          <h2>Your rights</h2>
+          <p>Under UK data protection law you can ask us to:</p>
+          <ul>
+            <li>tell you what personal information we hold about you and give you a copy</li>
+            <li>correct it</li>
+            <li>delete it</li>
+            <li>restrict how we use it</li>
+            <li>stop using it where we rely on legitimate interests</li>
+            <li>provide it to you in a portable form</li>
+          </ul>
+          <p>
+            Email <a href="mailto:{{ contactEmail }}">{{ contactEmail }}</a> and we will respond
+            within one month.
+          </p>
+        </section>
+
+        <section class="prose__section">
+          <h2>Complaints</h2>
+          <p>
+            If you are unhappy with how we have handled your information you can complain to the
+            Information Commissioner's Office at <a href="https://ico.org.uk">ico.org.uk</a>. We
+            would appreciate the chance to put things right first.
+          </p>
+        </section>
+
+        <section class="prose__section">
+          <h2>Changes to this notice</h2>
+          <p>We will update this page if anything changes and revise the date at the top.</p>
+        </section>
       </article>
     </main>
     <!-- @include partials/site-footer.html -->
