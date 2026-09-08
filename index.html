@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ siteName }} | Software studio in {{ company.baseCity }}, UK</title>
+    <meta
+      name="description"
+      content="{{ company.tradingName }} is an independent software studio in {{ company.baseCity }}. We build focused products and web applications, and help businesses cut the nonsense out of their software."
+    />
+    <link rel="canonical" href="{{ siteUrl }}/" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- open graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{ siteName }}" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:url" content="{{ siteUrl }}/" />
+    <meta
+      property="og:title"
+      content="{{ siteName }} | Software studio in {{ company.baseCity }}, UK"
+    />
+    <meta
+      property="og:description"
+      content="Focused products and web applications from an independent software studio in {{ company.baseCity }}."
+    />
+    <meta property="og:image" content="{{ siteUrl }}/static/social-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="{{ siteName }} logo and website address" />
+
+    <!-- twitter card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="{{ siteName }} | Software studio in {{ company.baseCity }}, UK"
+    />
+    <meta
+      name="twitter:description"
+      content="Focused products and web applications from an independent software studio in {{ company.baseCity }}."
+    />
+    <meta name="twitter:image" content="{{ siteUrl }}/static/social-preview.png" />
+    <meta name="twitter:image:alt" content="{{ siteName }} logo and website address" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "{{ company.tradingName }}",
+        "legalName": "{{ company.legalName }}",
+        "url": "{{ siteUrl }}",
+        "logo": "{{ siteUrl }}/static/favicon-512.png",
+        "email": "{{ contactEmail }}",
+        "foundingDate": "{{ company.foundingDate }}",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "{{ company.registeredOffice.line1 }}, {{ company.registeredOffice.line2 }}",
+          "addressLocality": "{{ company.registeredOffice.city }}",
+          "postalCode": "{{ company.registeredOffice.postcode }}",
+          "addressCountry": "GB"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "propertyID": "UK company number",
+          "value": "{{ company.number }}"
+        }
+      }
+    </script>
+    <!-- @include partials/head-shared.html -->
+  </head>
+  <body>
+    <!-- @include partials/site-header.html -->
+    <main id="main" class="page-main" tabindex="-1">
+      <section class="container hero" aria-labelledby="hero-heading">
+        <div class="hero__content">
+          <h1 id="hero-heading" class="hero__title">
+            Simple software for people who are tired of complicated<span class="hero__accent"
+              >.</span
+            >
+          </h1>
+          <div class="hero__intro">
+            <p class="hero__lead">
+              Most business software is
+              <strong>bloated, over-complicated and a chore to use</strong>.
+            </p>
+            <p class="hero__lead">
+              {{ company.tradingName }} is an independent software studio in {{ company.baseCity }}.
+              We build the opposite: <strong>focused products and web apps</strong> that do the job
+              and get out of your way.
+            </p>
+          </div>
+          <div class="hero__actions">
+            <a class="button button--primary" href="#products">See our products</a>
+            <a class="button button--secondary" href="#contact">Work with us</a>
+          </div>
+        </div>
+      </section>
+      <section
+        id="products"
+        class="container section"
+        aria-labelledby="products-heading"
+        data-reveal
+      >
+        <div class="section__header">
+          <h2 id="products-heading">Products</h2>
+          <p class="section__lead">Things we make and stand behind.</p>
+        </div>
+        <ul class="product-grid list-reset">
+          <li class="product-card">
+            <h3 class="product-card__name">
+              <img
+                class="product-card__logo"
+                src="/static/nudge-logo.svg"
+                alt="{{ products.nudge.name }}"
+                width="194"
+                height="32"
+              />
+            </h3>
+            <p class="product-card__tagline">Customer support for small teams.</p>
+            <p>
+              Track <strong>questions, feature requests and bugs</strong> in one place, without the
+              long email threads and outdated spreadsheets.
+            </p>
+            <a class="product-card__link" href="{{ products.nudge.url }}">Visit nudgesupport.com</a>
+          </li>
+          <li class="product-card">
+            <h3 class="product-card__name">
+              <span class="product-card__mark" aria-hidden="true">S</span>
+              <span>{{ products.spends.name }}</span>
+            </h3>
+            <span class="badge">Coming soon to iOS</span>
+            <p class="product-card__tagline">Personal finance by pay period.</p>
+            <p>
+              See <strong>how much you will have left by payday</strong>, and
+              <strong>where your money goes</strong> each month.
+            </p>
+          </li>
+        </ul>
+      </section>
+      <section
+        id="services"
+        class="container section"
+        aria-labelledby="services-heading"
+        data-reveal
+      >
+        <div class="section__header">
+          <h2 id="services-heading">Services</h2>
+          <p class="section__lead">The same standard, applied to your software.</p>
+        </div>
+        <ul class="service-grid list-reset">
+          <li class="service-card">
+            <svg
+              class="service-card__icon"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="3" y="4" width="18" height="16" rx="3" />
+              <path d="M3 9h18" />
+            </svg>
+            <h3>Web applications</h3>
+            <p>
+              Bespoke web apps and internal tools, designed around
+              <strong>how your team actually works</strong>.
+            </p>
+            <p>Front end to database, built to be easily maintained.</p>
+          </li>
+          <li class="service-card">
+            <svg
+              class="service-card__icon"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" />
+              <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
+            </svg>
+            <h3>Integrations and automation</h3>
+            <p>
+              Running your business on <strong>spreadsheets</strong>? They break, go stale, and only
+              one person knows how they work.
+            </p>
+            <p>
+              We replace them with simple tools that
+              <strong>connect to the systems you already use</strong> and keep the data moving on
+              its own.
+            </p>
+          </li>
+          <li class="service-card">
+            <svg
+              class="service-card__icon"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"
+              />
+            </svg>
+            <h3>Consultancy</h3>
+            <p>
+              <strong>Straight answers</strong> on what to build, how to build it, and how to get a
+              stalled project moving.
+            </p>
+            <p>No jargon, no upsell.</p>
+          </li>
+        </ul>
+      </section>
+      <section id="about" class="container section" aria-labelledby="about-heading" data-reveal>
+        <div class="section__header">
+          <h2 id="about-heading">About</h2>
+        </div>
+        <div class="about__body">
+          <p class="section__lead">
+            {{ company.legalName }} was founded in {{ company.foundingYear }} and is based in {{
+            company.baseCity }}, UK.
+          </p>
+          <p>
+            Our name is the point: <strong>say what matters, leave out what doesn't</strong>. We
+            build software the same way.
+          </p>
+        </div>
+      </section>
+      <section
+        id="contact"
+        class="container section contact"
+        aria-labelledby="contact-heading"
+        data-reveal
+      >
+        <div class="contact__panel">
+          <div class="section__header">
+            <h2 id="contact-heading">Contact</h2>
+            <p class="section__lead">
+              Got a <strong>project</strong>, or a <strong>tool your team hates using</strong>? Tell
+              us about it.
+            </p>
+          </div>
+          <a class="button button--primary" href="mailto:{{ contactEmail }}">{{ contactEmail }}</a>
+          <address class="contact__address">
+            <span class="contact__address-label">Registered office</span>
+            <span>{{ company.legalName }}</span>
+            <span>{{ company.registeredOffice.line1 }}</span>
+            <span>{{ company.registeredOffice.line2 }}</span>
+            <span>{{ company.registeredOffice.city }}</span>
+            <span>{{ company.registeredOffice.postcode }}</span>
+            <span>{{ company.registeredOffice.country }}</span>
+          </address>
+        </div>
+      </section>
+    </main>
+    <!-- @include partials/site-footer.html -->
+    <script type="module" src="/scripts/main.js"></script>
+  </body>
+</html>

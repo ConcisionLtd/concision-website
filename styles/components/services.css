@@ -1,0 +1,21 @@
+.service-grid {
+  display: grid;
+  gap: 1.5rem;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  border: 1px solid var(--color-border-muted);
+  border-radius: var(--radius-card);
+
+  & .service-card__icon {
+    color: var(--color-primary-contrast);
+  }
+}

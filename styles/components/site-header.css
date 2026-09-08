@@ -1,0 +1,105 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-index-header);
+  background-color: var(--color-header-backdrop);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--color-border-muted);
+
+  & .site-header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: var(--header-height);
+  }
+
+  & .site-header__brand {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-text-heading);
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-tight);
+
+    &:hover {
+      color: var(--color-primary-contrast);
+    }
+
+    & .site-header__logo {
+      width: auto;
+      height: 2rem;
+    }
+  }
+
+  /* the button only exists visually once JavaScript has enhanced the header */
+  & .site-header__toggle {
+    display: none;
+    align-items: center;
+    padding: 0.5rem;
+    color: var(--color-text-heading);
+  }
+
+  & .site-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    width: 100%;
+    padding-block: 0.5rem 1.25rem;
+  }
+
+  & .site-nav__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  & .site-nav__link {
+    color: var(--color-text-heading);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-primary-contrast);
+    }
+  }
+
+  &.site-header--enhanced {
+    & .site-header__toggle {
+      display: inline-flex;
+    }
+
+    & .site-nav {
+      display: none;
+    }
+
+    &.site-header--open .site-nav {
+      display: flex;
+    }
+  }
+
+  @media (min-width: 768px) {
+    & .site-nav,
+    &.site-header--enhanced .site-nav {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+      width: auto;
+      padding-block: 0;
+    }
+
+    & .site-nav__list {
+      flex-direction: row;
+      gap: 2rem;
+    }
+
+    &.site-header--enhanced .site-header__toggle {
+      display: none;
+    }
+  }
+}

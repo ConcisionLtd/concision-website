@@ -1,0 +1,16 @@
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <p class="site-footer__copyright">&copy; {{ build.year }} {{ company.legalName }}</p>
+    <p class="site-footer__legal">
+      {{ company.tradingName }} is a trading name of {{ company.legalName }}, registered in {{
+      company.registeredIn }}, company number {{ company.number }}. Registered office: {{
+      company.registeredOffice.line1 }}, {{ company.registeredOffice.line2 }}, {{
+      company.registeredOffice.city }}, {{ company.registeredOffice.postcode }}, {{
+      company.registeredOffice.country }}.
+    </p>
+    <ul class="site-footer__links list-reset">
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="mailto:{{ contactEmail }}">{{ contactEmail }}</a></li>
+    </ul>
+  </div>
+</footer>
