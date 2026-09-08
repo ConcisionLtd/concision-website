@@ -80,9 +80,10 @@ One-time setup, in the Cloudflare dashboard for the Concision account:
 
 1. **Create the repository.** GitHub → New repository, owner `ConcisionLtd`, name
    `concision-website`, public, no template. Push this branch, then merge it to `main`.
-2. **Authorise Cloudflare's GitHub app** for the `ConcisionLtd` organisation. This is only needed
-   the first time you connect a repository from the organisation; Cloudflare prompts for it
-   during the next step.
+2. **Give Cloudflare's GitHub app access to the repository.** On GitHub, go to Organisation
+   settings → GitHub Apps → Cloudflare Workers and Pages → Configure → Repository access, and add
+   this repository if the installation is limited to selected repositories. Without that, the
+   project can still be created but pushes never trigger deployments.
 3. **Workers & Pages → Create → Pages → Connect to Git.** Choose `ConcisionLtd/concision-website`.
 4. **Build settings.** Framework preset: None. Build command: `npm run build`. Build output
    directory: `dist`. Root directory: `/`. No environment variables. Node comes from `.nvmrc`.
