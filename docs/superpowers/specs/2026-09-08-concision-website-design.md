@@ -172,7 +172,7 @@ The rules:
   Cache-Control: public, max-age=86400
 ```
 
-The two `cloudflareinsights.com` origins exist for Cloudflare Web Analytics, which is enabled in the Pages dashboard and injected at the edge. HSTS and HTTPS upgrades are left to the Cloudflare zone settings (Always Use HTTPS), which is why the CSP carries no `upgrade-insecure-requests`: that directive would also apply to the plain-HTTP preview server the tests run against. `style-src 'self'` means no inline styles anywhere, which is also a project rule. `/assets/` holds only Vite's content-hashed bundle, so it can be immutable; committed files (logos, icons, the social preview, the JavaScript flag script) live under `public/static/`, are served from `/static/`, and get a one-day cache so a changed logo reaches returning visitors.
+The two `cloudflareinsights.com` origins exist for Cloudflare Web Analytics, which is enabled in the Pages dashboard and injected at the edge. HSTS and HTTPS upgrades are left to the Cloudflare zone settings (Always Use HTTPS), which is why the CSP carries no `upgrade-insecure-requests`: that directive would also apply to the plain-HTTP preview server the tests run against. `style-src 'self'` means no inline styles anywhere, which is also a project rule. `/assets/` holds only Vite's content-hashed bundle, so it can be immutable; committed files (logos, icons, the social preview) live under `public/static/`, are served from `/static/`, and get a one-day cache so a changed logo reaches returning visitors.
 
 ### 4.6 Pages and routing
 
@@ -190,7 +190,6 @@ JavaScript is progressive enhancement. With it disabled the site is complete: th
 - `mobileNav.js`: toggles the menu below 768px, sets `aria-expanded`, closes on link click, on Escape and on resize past the breakpoint.
 - `revealOnScroll.js`: adds `is-visible` to `[data-reveal]` elements when they enter the viewport, using `IntersectionObserver`, once. Does nothing when `prefers-reduced-motion: reduce` matches.
 - `main.js`: imports both and runs them as the module executes (module scripts are deferred, so the DOM is already parsed).
-- `public/static/js-flag.js`: a one-line classic script loaded in `<head>` that adds the class `js` to `<html>` before the first paint, so the reveal and menu styles that depend on JavaScript never flash their unenhanced state on a slow connection. The class is also what the CSS gates on; the module does not set it.
 
 No scroll spy and no scroll-linked header effects; the header hairline is always on. The privacy page loads the same entry script; it has no `[data-reveal]` elements, so only the menu has anything to act on.
 

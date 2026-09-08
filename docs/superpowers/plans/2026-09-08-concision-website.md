@@ -3594,7 +3594,6 @@ The final whole-branch review found defects in the spec's Cloudflare assumptions
 - The unused public copy of the full logo is gone; the social preview template reads `branding/concision-logo.svg`.
 - `.product-card__link` uses `--color-primary-strong` (the contrast teal on the muted card surface was 4.44:1); the contrast test now covers `color-primary-contrast` and `color-primary-strong` on `color-surface-muted`, and `color-text-subtle` on `color-primary-tint`.
 - Escape now returns focus to the menu button; the navigation spec asserts it.
-- `public/static/js-flag.js` (classic script in `<head>`) sets the `js` class before first paint; `scripts/main.js` no longer sets it.
 - `@media print` shows revealed sections; `<main>` has `tabindex="-1"`; `og:image:alt` describes the logo and address.
 - New `tests/e2e/headers.spec.js`: `dist/_headers` matches `formatHeadersFile(securityHeaderRules)` after the build, and the served Content-Security-Policy equals the configured one. Layout spec adds 320 and 1920.
 - Selector constants in `contact.spec.js` and `hero.spec.js`.
