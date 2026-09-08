@@ -2448,7 +2448,8 @@ export const initRevealOnScroll = () => {
   }, OBSERVER_OPTIONS);
 
   elements.forEach((element) => {
-    if (isInViewport(element)) {
+    const elementIsInViewport = isInViewport(element);
+    if (elementIsInViewport) {
       reveal(element);
     } else {
       observer.observe(element);
@@ -2834,7 +2835,8 @@ for (const { path, canonical } of PAGES) {
   test(`${path} loads without console errors or failed requests`, async ({ page }) => {
     const problems = [];
     page.on('console', (message) => {
-      if (message.type() === 'error') {
+      const isError = message.type() === 'error';
+      if (isError) {
         problems.push(`console: ${message.text()}`);
       }
     });
@@ -3419,7 +3421,7 @@ runtime dependencies. Spec: `docs/superpowers/specs/2026-09-08-concision-website
 Run:
 
 ```bash
-node -e "import('node:fs').then(({ readFileSync }) => { const yaml = readFileSync('.github/workflows/ci.yml', 'utf8'); if (!yaml.includes('npm run test:e2e')) { throw new Error('workflow missing e2e step'); } console.log('workflow ok'); })"
+node -e "import('node:fs').then(({ readFileSync }) => { const yaml = readFileSync('.github/workflows/ci.yml', 'utf8'); const hasE2eStep = yaml.includes('npm run test:e2e'); if (!hasE2eStep) { throw new Error('workflow missing e2e step'); } console.log('workflow ok'); })"
 npm run format && npm run lint && npm run format:check && npm run test
 ```
 
