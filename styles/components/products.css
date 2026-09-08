@@ -46,6 +46,7 @@
   }
 
   & .product-card__link {
+    color: var(--color-primary-strong);
     font-weight: var(--font-weight-medium);
   }
 }

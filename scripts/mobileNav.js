@@ -36,8 +36,11 @@ export const initMobileNav = () => {
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === ESCAPE_KEY) {
+    const isEscape = event.key === ESCAPE_KEY;
+    const isOpen = header.classList.contains(OPEN_CLASS);
+    if (isEscape && isOpen) {
       close();
+      toggle.focus();
     }
   });
 

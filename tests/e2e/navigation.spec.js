@@ -36,6 +36,7 @@ test.describe('mobile menu', () => {
 
     await expect(mainNav(page)).toBeHidden();
     await expect(menuButton(page)).toHaveAttribute('aria-expanded', 'false');
+    await expect(menuButton(page)).toBeFocused();
   });
 
   test('closes when a link is chosen', async ({ page }) => {
