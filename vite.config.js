@@ -13,6 +13,8 @@ const templateData = {
 };
 
 export default defineConfig({
+  // multi-page site: unknown paths must 404 in dev and preview, as they do on Cloudflare Pages
+  appType: 'mpa',
   plugins: [
     htmlPartials({ data: templateData }),
     cloudflareHeaders({ rules: securityHeaderRules }),
