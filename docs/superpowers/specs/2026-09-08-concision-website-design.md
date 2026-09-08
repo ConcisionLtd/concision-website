@@ -24,23 +24,23 @@ The site is static. There is no backend, no contact form, no CMS and no runtime 
 
 These are the canonical values. They live once in `site.config.js` and are injected into the HTML at build time. Nothing else in the repo restates them.
 
-| Fact | Value |
-| --- | --- |
-| Legal name | Concision Ltd |
-| Trading name | Concision |
-| Company number | 14129925 |
-| Incorporated | 25 May 2022 |
-| Registered in | England and Wales (Companies House's term for a London registration; matches the Nudge footer) |
-| Registered office | 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ, United Kingdom |
-| Nature of registered office | Third-party registered office service. Not a trading location and never described as "our office". |
-| Based in | Leeds, United Kingdom |
-| Contact email | hello@concision.io (group mailbox, already exists) |
-| Domain | concision.io on Cloudflare. Currently a redirect rule sends it to nudgesupport.com. |
-| Brand colour | `#32AFA9` |
-| Ethos | "Cut the nonsense." Business software tends to be bloated, over-complicated and hard to use. It should be simple, and Concision makes it simple. |
-| Products | Nudge (live, `https://nudgesupport.com`). Spends (iOS personal finance tracker, in development, no public URL yet). |
-| Services | Web applications. Integrations and automation. Consultancy. |
-| GitHub | `ConcisionLtd/concision-website`, public. Not yet created. |
+| Fact                        | Value                                                                                                                                            |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Legal name                  | Concision Ltd                                                                                                                                    |
+| Trading name                | Concision                                                                                                                                        |
+| Company number              | 14129925                                                                                                                                         |
+| Incorporated                | 25 May 2022                                                                                                                                      |
+| Registered in               | England and Wales (Companies House's term for a London registration; matches the Nudge footer)                                                   |
+| Registered office           | 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ, United Kingdom                                                                            |
+| Nature of registered office | Third-party registered office service. Not a trading location and never described as "our office".                                               |
+| Based in                    | Leeds, United Kingdom                                                                                                                            |
+| Contact email               | hello@concision.io (group mailbox, already exists)                                                                                               |
+| Domain                      | concision.io on Cloudflare. Currently a redirect rule sends it to nudgesupport.com.                                                              |
+| Brand colour                | `#32AFA9`                                                                                                                                        |
+| Ethos                       | "Cut the nonsense." Business software tends to be bloated, over-complicated and hard to use. It should be simple, and Concision makes it simple. |
+| Products                    | Nudge (live, `https://nudgesupport.com`). Spends (iOS personal finance tracker, in development, no public URL yet).                              |
+| Services                    | Web applications. Integrations and automation. Consultancy.                                                                                      |
+| GitHub                      | `ConcisionLtd/concision-website`, public. Not yet created.                                                                                       |
 
 ## 3. Scope
 
@@ -64,12 +64,12 @@ Out of scope (decided during brainstorming):
 
 Vite as the dev server and multi-page builder, plain HTML, CSS and JavaScript, no framework. All dependencies are development-only:
 
-| Package | Purpose |
-| --- | --- |
-| `vite` | Dev server, multi-page build, asset hashing |
-| `@playwright/test` | Browser tests and the asset rendering script |
-| `eslint`, `@eslint/js`, `globals` | Linting (same flat config style as Nudge) |
-| `prettier` | Formatting (same `.prettierrc` as Nudge) |
+| Package                           | Purpose                                      |
+| --------------------------------- | -------------------------------------------- |
+| `vite`                            | Dev server, multi-page build, asset hashing  |
+| `@playwright/test`                | Browser tests and the asset rendering script |
+| `eslint`, `@eslint/js`, `globals` | Linting (same flat config style as Nudge)    |
+| `prettier`                        | Formatting (same `.prettierrc` as Nudge)     |
 
 Node 20 LTS, pinned by `.nvmrc`, used locally, in CI and by Cloudflare Pages. The package is `"type": "module"`; every script, plugin and test is an ES module. Unit tests use Node's built-in test runner, so no test framework is installed.
 
@@ -175,9 +175,9 @@ The two `cloudflareinsights.com` origins exist for Cloudflare Web Analytics, whi
 
 ### 4.6 Pages and routing
 
-| URL | Source | Notes |
-| --- | --- | --- |
-| `/` | `index.html` | Single scrolling page with anchor navigation |
+| URL         | Source               | Notes                                                                 |
+| ----------- | -------------------- | --------------------------------------------------------------------- |
+| `/`         | `index.html`         | Single scrolling page with anchor navigation                          |
 | `/privacy/` | `privacy/index.html` | Directory index so the clean URL works in `vite preview` and on Pages |
 
 Both are build inputs in `vite.config.js` (`build.rolldownOptions.input`; Vite 8 bundles with Rolldown and deprecates `rollupOptions`). `public/_redirects` contains one rule: `https://www.concision.io/* https://concision.io/:splat 301`.
@@ -357,18 +357,18 @@ On `pull_request` and on `push` to `main`: checkout, setup-node from `.nvmrc` wi
 
 ### 9.4 npm scripts
 
-| Script | Command |
-| --- | --- |
-| `dev` | `vite` |
-| `build` | `vite build` |
-| `preview` | `vite preview` |
-| `lint` | `eslint .` |
-| `format` | `prettier --write .` |
-| `format:check` | `prettier --check .` |
-| `test:unit` | `node --test tests/unit` |
-| `test:e2e` | `playwright test` |
-| `test` | `npm run test:unit && npm run test:e2e` |
-| `render-assets` | `node tools/render-assets.js` |
+| Script          | Command                                 |
+| --------------- | --------------------------------------- |
+| `dev`           | `vite`                                  |
+| `build`         | `vite build`                            |
+| `preview`       | `vite preview`                          |
+| `lint`          | `eslint .`                              |
+| `format`        | `prettier --write .`                    |
+| `format:check`  | `prettier --check .`                    |
+| `test:unit`     | `node --test tests/unit`                |
+| `test:e2e`      | `playwright test`                       |
+| `test`          | `npm run test:unit && npm run test:e2e` |
+| `render-assets` | `node tools/render-assets.js`           |
 
 ## 10. Development workflow
 
@@ -383,11 +383,11 @@ Nothing is committed until the company asks. Temporary working files go in `temp
 
 ## 11. Open items
 
-| Item | Owner | When |
-| --- | --- | --- |
-| Drop the logo SVG(s) into `branding/` | Company | Any time before the pre-push review |
-| Choose the headline from the candidates in 5.2 | Company | Pre-push review |
-| Review the privacy notice wording | Company | Pre-push review |
-| Create the GitHub repo and push | Claude, with confirmation | After local review |
-| Cloudflare Pages project, custom domain, redirect removal, analytics | Company with Claude, following the README runbook | After first push |
-| Branch protection on `main` | Company or Claude via the GitHub connector | After first push |
+| Item                                                                 | Owner                                             | When                                |
+| -------------------------------------------------------------------- | ------------------------------------------------- | ----------------------------------- |
+| Drop the logo SVG(s) into `branding/`                                | Company                                           | Any time before the pre-push review |
+| Choose the headline from the candidates in 5.2                       | Company                                           | Pre-push review                     |
+| Review the privacy notice wording                                    | Company                                           | Pre-push review                     |
+| Create the GitHub repo and push                                      | Claude, with confirmation                         | After local review                  |
+| Cloudflare Pages project, custom domain, redirect removal, analytics | Company with Claude, following the README runbook | After first push                    |
+| Branch protection on `main`                                          | Company or Claude via the GitHub connector        | After first push                    |

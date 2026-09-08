@@ -20,6 +20,7 @@
   ```
 
   Never push. Never touch `main`. Stage only the task's files (`git add` the paths you created or changed; never `git add -A` blindly), and never commit `node_modules/`, `dist/`, `temp/`, `playwright-report/` or `test-results/`.
+
 - Node 20 (`.nvmrc` contains `20`). `package.json` has `"type": "module"`; every `.js` file is an ES module.
 - Development dependencies only: `vite`, `@playwright/test`, `eslint`, `@eslint/js`, `globals`, `prettier`. No runtime dependencies, no icon fonts, no web fonts, no CDN scripts or styles.
 - The CSP is `style-src 'self'` and `script-src 'self'`: no `style=""` attributes, no `<style>` blocks and no inline JavaScript in site HTML. `<script type="application/ld+json">` is a data block and is allowed. Rendering templates under `tools/asset-templates/` are not served and may use `<style>` blocks.
@@ -35,10 +36,12 @@
 ### Task 1: Scaffold the project and the site config
 
 **Files:**
+
 - Create: `package.json`, `.nvmrc`, `.gitignore`, `.prettierrc`, `.prettierignore`, `eslint.config.mjs`, `site.config.js`
 - Test: `tests/unit/siteConfig.test.js`
 
 **Interfaces:**
+
 - Produces: `siteConfig` (named export of `site.config.js`) with the shape shown in Step 6. Every later task reads company facts from it.
 - Produces: npm scripts `dev`, `build`, `preview`, `lint`, `format`, `format:check`, `test:unit`, `test:e2e`, `test`, `render-assets`.
 
@@ -257,11 +260,13 @@ Expected: Prettier rewrites nothing unexpected, ESLint reports no problems, the 
 ### Task 2: HTML partials plugin
 
 **Files:**
+
 - Create: `plugins/htmlPartials.js`
 - Create: `tests/unit/fixtures/partials/inner.html`, `outer.html`, `footer.html`, `cycle-a.html`, `cycle-b.html`
 - Test: `tests/unit/htmlPartials.test.js`
 
 **Interfaces:**
+
 - Produces: `renderHtml(html, { root, data })` returning the transformed HTML string; throws `Error` on a missing partial, a circular include or an unknown placeholder.
 - Produces: `htmlPartials({ data })` returning a Vite plugin object. Task 4 passes it `{ ...siteConfig, build: { year } }`.
 - Directive syntax: `<!-- @include partials/site-footer.html -->` (path relative to the Vite root). Placeholder syntax: `{{ company.number }}`.
@@ -322,7 +327,10 @@ test('fails on a circular include', () => {
 });
 
 test('fails on an unknown placeholder', () => {
-  assert.throws(() => render('{{ company.missing }}'), /Unknown placeholder: \{\{ company\.missing \}\}/);
+  assert.throws(
+    () => render('{{ company.missing }}'),
+    /Unknown placeholder: \{\{ company\.missing \}\}/
+  );
 });
 
 test('fails when a placeholder resolves to an object rather than a value', () => {
@@ -427,10 +435,12 @@ Expected: all pass (14 unit tests in total).
 ### Task 3: Security headers config and the Cloudflare `_headers` plugin
 
 **Files:**
+
 - Create: `config/securityHeaders.js`, `plugins/cloudflareHeaders.js`
 - Test: `tests/unit/securityHeaders.test.js`
 
 **Interfaces:**
+
 - Produces: `securityHeaderRules` (array of `{ path: string, headers: Record<string, string> }`), `globalHeaders` (the headers object of the `/*` rule), `formatHeadersFile(rules)` returning the `_headers` file text.
 - Produces: `cloudflareHeaders({ rules })` returning a Vite plugin that emits `_headers` during `generateBundle`.
 
@@ -577,10 +587,12 @@ Expected: all pass (18 unit tests).
 ### Task 4: Vite and Playwright wiring, page shells, shared partials
 
 **Files:**
+
 - Create: `vite.config.js`, `playwright.config.js`, `index.html`, `privacy/index.html`, `partials/head-shared.html`, `partials/site-header.html`, `partials/site-footer.html`
 - Test: `tests/e2e/companyDetails.spec.js`, `tests/e2e/pages.spec.js`
 
 **Interfaces:**
+
 - Consumes: `htmlPartials`, `cloudflareHeaders`, `securityHeaderRules`, `globalHeaders`, `siteConfig`.
 - Produces: the page shells that later tasks fill. `index.html` has `<main id="main" class="page-main">` that section tasks append to, in order: hero, products, services, about, contact. The header's `<nav>` has accessible name `Main` and the menu button's accessible name is `Menu`; tests rely on both.
 - Produces: Playwright projects `desktop-chromium` (1280×800) and `mobile-chromium` (375×812), base URL `http://localhost:4173`, web server `npm run build && npm run preview`.
@@ -603,7 +615,10 @@ const templateData = {
 };
 
 export default defineConfig({
-  plugins: [htmlPartials({ data: templateData }), cloudflareHeaders({ rules: securityHeaderRules })],
+  plugins: [
+    htmlPartials({ data: templateData }),
+    cloudflareHeaders({ rules: securityHeaderRules }),
+  ],
   build: {
     rolldownOptions: {
       input: {
@@ -721,11 +736,11 @@ export default defineConfig({
   <div class="container site-footer__inner">
     <p class="site-footer__copyright">&copy; {{ build.year }} {{ company.legalName }}</p>
     <p class="site-footer__legal">
-      {{ company.tradingName }} is a trading name of {{ company.legalName }}, registered in
-      {{ company.registeredIn }}, company number {{ company.number }}. Registered office:
-      {{ company.registeredOffice.line1 }}, {{ company.registeredOffice.line2 }},
-      {{ company.registeredOffice.city }}, {{ company.registeredOffice.postcode }},
-      {{ company.registeredOffice.country }}.
+      {{ company.tradingName }} is a trading name of {{ company.legalName }}, registered in {{
+      company.registeredIn }}, company number {{ company.number }}. Registered office: {{
+      company.registeredOffice.line1 }}, {{ company.registeredOffice.line2 }}, {{
+      company.registeredOffice.city }}, {{ company.registeredOffice.postcode }}, {{
+      company.registeredOffice.country }}.
     </p>
     <ul class="site-footer__links list-reset">
       <li><a href="/privacy/">Privacy</a></li>
@@ -866,12 +881,14 @@ Expected: all pass. Prettier will reflow the HTML; that is fine.
 ### Task 5: Design tokens, base styles and the contrast test
 
 **Files:**
+
 - Create: `styles/variables.css`, `styles/base.css`
 - Modify: `partials/head-shared.html` (add the stylesheet link)
 - Create: `tests/unit/helpers/contrast.js`
 - Test: `tests/unit/colorContrast.test.js`, `tests/e2e/layout.spec.js`
 
 **Interfaces:**
+
 - Produces: the CSS custom properties listed in Step 3 (colours, type, layout, radius, motion). Every component stylesheet uses these names.
 - Produces: base classes `.container`, `.section`, `.section__header`, `.section__lead`, `.list-reset`, `.visually-hidden`, `.skip-link`, `.button`, `.button--primary`, `.button--secondary`, `.button--small`, `.badge`.
 - Produces: `contrastRatio(hexA, hexB)` and `readColorTokens(filePath)` helpers for tests.
@@ -996,8 +1013,7 @@ Expected: FAIL: `styles/variables.css` does not exist (ENOENT).
   --color-header-backdrop: rgb(255 255 255 / 0.8);
 
   /* type */
-  --font-family-base:
-    system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-family-base: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-size-sm: 0.875rem;
   --font-size-md: 1rem;
   --font-size-body: 1.125rem;
@@ -1287,8 +1303,7 @@ Component stylesheets are imported at the top of this file by later tasks, direc
 `partials/head-shared.html` becomes:
 
 ```html
-<meta name="theme-color" content="#ffffff" />
-<link rel="stylesheet" href="/styles/base.css" />
+<meta name="theme-color" content="#ffffff" /> <link rel="stylesheet" href="/styles/base.css" />
 ```
 
 - [ ] **Step 7: Write the layout test**
@@ -1328,17 +1343,18 @@ for (const pagePath of PAGE_PATHS) {
 Run: `npm run format && npm run lint && npm run format:check && npm run test`
 Expected: unit tests pass (32), browser tests pass (both projects). Open `npm run dev` in a browser and confirm the footer text renders in the system font with the muted colours and the skip link appears on Tab.
 
-
 ---
 
 ### Task 6: Header styling and the mobile menu
 
 **Files:**
+
 - Create: `styles/components/site-header.css`, `scripts/main.js`, `scripts/mobileNav.js`
 - Modify: `styles/base.css` (import), `index.html` and `privacy/index.html` (script tag)
 - Test: `tests/e2e/navigation.spec.js`
 
 **Interfaces:**
+
 - Consumes: the header partial from Task 4 (`.site-header`, `.site-header__toggle`, `.site-nav`, nav name `Main`, button name `Menu`) and base classes from Task 5.
 - Produces: `initMobileNav()` (named export of `scripts/mobileNav.js`). `scripts/main.js` is the single entry that later tasks add imports to. When JavaScript runs, `<html>` gains the class `js` and the header gains `site-header--enhanced`; an open menu adds `site-header--open`.
 
@@ -1634,11 +1650,13 @@ Expected: all pass.
 ### Task 7: Hero section
 
 **Files:**
+
 - Modify: `index.html` (inside `<main>`), `styles/base.css` (import)
 - Create: `styles/components/hero.css`
 - Test: `tests/e2e/hero.spec.js`
 
 **Interfaces:**
+
 - Consumes: `.container`, `.button`, `.button--primary`, `.button--secondary` from Task 5; `company.tradingName` and `company.baseCity` from `siteConfig`.
 - Produces: the page's only `<h1>`. The headline text is a review-stage choice (spec 5.2); the build uses candidate 1.
 
@@ -1659,7 +1677,10 @@ test('the hero carries the single h1 and both calls to action', async ({ page })
     'href',
     '#products'
   );
-  await expect(page.getByRole('link', { name: 'Work with us' })).toHaveAttribute('href', '#contact');
+  await expect(page.getByRole('link', { name: 'Work with us' })).toHaveAttribute(
+    'href',
+    '#contact'
+  );
 });
 
 test('the hero says where the company works from', async ({ page }) => {
@@ -1685,10 +1706,10 @@ Replace the empty `<main id="main" class="page-main"></main>` in `index.html` wi
         Software that cuts the nonsense<span class="hero__accent">.</span>
       </h1>
       <p class="hero__lead">
-        Most business software is bloated, over-complicated and a chore to use.
-        {{ company.tradingName }} is an independent software studio in {{ company.baseCity }}
-        that builds the opposite: focused products and web applications that do the job and get
-        out of your way.
+        Most business software is bloated, over-complicated and a chore to use. {{
+        company.tradingName }} is an independent software studio in {{ company.baseCity }} that
+        builds the opposite: focused products and web applications that do the job and get out of
+        your way.
       </p>
       <div class="hero__actions">
         <a class="button button--primary" href="#products">See our products</a>
@@ -1759,11 +1780,13 @@ Expected: all pass. In the browser the headline is large with a teal full stop, 
 ### Task 8: Products section
 
 **Files:**
+
 - Create: `public/assets/nudge-logo.svg` (copied), `styles/components/products.css`
 - Modify: `index.html` (after the hero), `styles/base.css` (import)
 - Test: `tests/e2e/products.spec.js`
 
 **Interfaces:**
+
 - Consumes: `.section`, `.section__header`, `.section__lead`, `.list-reset`, `.badge` from Task 5; `products.nudge.name`, `products.nudge.url`, `products.spends.name` from `siteConfig`.
 - Produces: `<section id="products">`, the target of the header link and the hero button.
 
@@ -1940,11 +1963,13 @@ Expected: all pass. Two cards side by side from 768px, stacked below.
 ### Task 9: Services and About sections
 
 **Files:**
+
 - Create: `styles/components/services.css`, `styles/components/about.css`
 - Modify: `index.html` (after products), `styles/base.css` (imports)
 - Test: `tests/e2e/sections.spec.js`
 
 **Interfaces:**
+
 - Consumes: `.section` classes from Task 5; `company.legalName`, `company.foundingYear`, `company.baseCity` from `siteConfig`.
 - Produces: `<section id="services">` and `<section id="about">`.
 
@@ -2032,8 +2057,7 @@ In `index.html`, directly after the products `</section>`, add:
       </svg>
       <h3>Integrations and automation</h3>
       <p>
-        Connect the systems you already use, replace manual re-keying, and let data move on its
-        own.
+        Connect the systems you already use, replace manual re-keying, and let data move on its own.
       </p>
     </li>
     <li class="service-card">
@@ -2068,12 +2092,12 @@ In `index.html`, directly after the products `</section>`, add:
   </div>
   <div class="about__body">
     <p class="section__lead">
-      {{ company.legalName }} was founded in {{ company.foundingYear }} and works from
-      {{ company.baseCity }}, UK.
+      {{ company.legalName }} was founded in {{ company.foundingYear }} and works from {{
+      company.baseCity }}, UK.
     </p>
     <p>
-      The name is a standard as much as a label: say what matters, leave out what doesn't, and
-      hold the software to the same rule.
+      The name is a standard as much as a label: say what matters, leave out what doesn't, and hold
+      the software to the same rule.
     </p>
   </div>
 </section>
@@ -2140,11 +2164,13 @@ Expected: all pass. Three service cards in a row from 1024px, with teal line ico
 ### Task 10: Contact section, footer styling and anchor integrity
 
 **Files:**
+
 - Create: `styles/components/contact.css`, `styles/components/site-footer.css`
 - Modify: `index.html` (after about), `styles/base.css` (imports)
 - Test: `tests/e2e/contact.spec.js`
 
 **Interfaces:**
+
 - Consumes: `.button--primary` and `.section` classes; `contactEmail`, `company.legalName`, `company.registeredOffice.*` from `siteConfig`.
 - Produces: `<section id="contact">`, the target of the header link, the header button and the hero's second button. With this task every anchor on the page resolves.
 
@@ -2170,9 +2196,7 @@ test('the contact button is a mailto link to the company address', async ({ page
   await expect(emailButton).toHaveAttribute('href', `mailto:${siteConfig.contactEmail}`);
 });
 
-test('the contact section labels the London address as the registered office', async ({
-  page,
-}) => {
+test('the contact section labels the London address as the registered office', async ({ page }) => {
   await page.goto('/');
   const contact = page.locator('#contact');
   await expect(contact).toContainText('Registered office');
@@ -2315,11 +2339,13 @@ Expected: all pass. The contact panel sits on a faint teal tint; the footer is s
 ### Task 11: Reveal on scroll
 
 **Files:**
+
 - Create: `scripts/revealOnScroll.js`, `styles/components/reveal.css`
 - Modify: `scripts/main.js`, `styles/base.css` (import), `index.html` (add `data-reveal` to the products, services, about and contact sections)
 - Test: `tests/e2e/reveal.spec.js`
 
 **Interfaces:**
+
 - Consumes: the `js` class on `<html>` set by `scripts/main.js` in Task 6.
 - Produces: `initRevealOnScroll()` (named export). Elements with `data-reveal` gain `is-visible` when they enter the viewport.
 
@@ -2377,7 +2403,12 @@ Expected: the first two FAIL (no `data-reveal` attributes); the no-JavaScript te
 In `index.html`, add the attribute `data-reveal` to the opening tags of the four sections with ids `products`, `services`, `about` and `contact`. For example:
 
 ```html
-<section id="products" class="container section" aria-labelledby="products-heading" data-reveal>
+<section
+  id="products"
+  class="container section"
+  aria-labelledby="products-heading"
+  data-reveal
+></section>
 ```
 
 The hero is not marked: it is on screen at load.
@@ -2482,11 +2513,13 @@ Expected: all pass. In the browser, sections rise gently into view as you scroll
 ### Task 12: Privacy notice content
 
 **Files:**
+
 - Modify: `privacy/index.html` (replace the `<article>`), `styles/base.css` (import)
 - Create: `styles/components/prose.css`
 - Test: `tests/e2e/privacy.spec.js`
 
 **Interfaces:**
+
 - Consumes: `company.*`, `contactEmail`, `siteName` from `siteConfig`.
 - Produces: the finished privacy page. The copy is flagged for the company's review before the first push; changing wording later only requires editing this file and the "Last updated" date.
 
@@ -2519,10 +2552,9 @@ test('the privacy notice identifies the company and how to reach it', async ({ p
   const article = page.getByRole('article');
   await expect(article).toContainText(siteConfig.company.legalName);
   await expect(article).toContainText(siteConfig.company.number);
-  await expect(article.getByRole('link', { name: siteConfig.contactEmail }).first()).toHaveAttribute(
-    'href',
-    `mailto:${siteConfig.contactEmail}`
-  );
+  await expect(
+    article.getByRole('link', { name: siteConfig.contactEmail }).first()
+  ).toHaveAttribute('href', `mailto:${siteConfig.contactEmail}`);
   await expect(article.getByRole('link', { name: /ico\.org\.uk/ })).toHaveAttribute(
     'href',
     'https://ico.org.uk'
@@ -2554,11 +2586,11 @@ Replace the `<article class="container prose">...</article>` in `privacy/index.h
   <section class="prose__section">
     <h2>Who we are</h2>
     <p>
-      {{ company.legalName }} ("we", "us") runs this website at {{ siteUrl }}. We are registered
-      in {{ company.registeredIn }}, company number {{ company.number }}. Our registered office is
-      {{ company.registeredOffice.line1 }}, {{ company.registeredOffice.line2 }},
-      {{ company.registeredOffice.city }}, {{ company.registeredOffice.postcode }},
-      {{ company.registeredOffice.country }}. You can reach us at
+      {{ company.legalName }} ("we", "us") runs this website at {{ siteUrl }}. We are registered in
+      {{ company.registeredIn }}, company number {{ company.number }}. Our registered office is {{
+      company.registeredOffice.line1 }}, {{ company.registeredOffice.line2 }}, {{
+      company.registeredOffice.city }}, {{ company.registeredOffice.postcode }}, {{
+      company.registeredOffice.country }}. You can reach us at
       <a href="mailto:{{ contactEmail }}">{{ contactEmail }}</a>.
     </p>
   </section>
@@ -2566,8 +2598,8 @@ Replace the `<article class="container prose">...</article>` in `privacy/index.h
   <section class="prose__section">
     <h2>What this notice covers</h2>
     <p>
-      This notice covers the {{ siteName }} website only. Our products, such as
-      {{ products.nudge.name }}, have their own privacy notices that apply when you use them.
+      This notice covers the {{ siteName }} website only. Our products, such as {{
+      products.nudge.name }}, have their own privacy notices that apply when you use them.
     </p>
   </section>
 
@@ -2581,10 +2613,10 @@ Replace the `<article class="container prose">...</article>` in `privacy/index.h
         and only gives us aggregated figures. We cannot identify you from it.
       </li>
       <li>
-        <strong>Hosting and security logs.</strong> The site is served by Cloudflare. Like any
-        host, Cloudflare processes technical information such as your IP address, browser type and
-        the pages you request in order to deliver the site and protect it from abuse. Cloudflare
-        holds these logs briefly under its own privacy policy.
+        <strong>Hosting and security logs.</strong> The site is served by Cloudflare. Like any host,
+        Cloudflare processes technical information such as your IP address, browser type and the
+        pages you request in order to deliver the site and protect it from abuse. Cloudflare holds
+        these logs briefly under its own privacy policy.
       </li>
       <li>
         <strong>Email.</strong> If you email us we receive your name, your email address and
@@ -2708,12 +2740,14 @@ Expected: all pass. The notice reads as a narrow column of short sections with b
 ### Task 13: Metadata, favicons, social preview, sitemap and robots
 
 **Files:**
+
 - Modify: `partials/head-shared.html`, `index.html` (head), `privacy/index.html` (head)
 - Create: `public/_redirects`, `public/robots.txt`, `public/sitemap.xml`, `public/manifest.json`, `public/assets/favicon.svg`, `tools/asset-templates/favicon.html`, `tools/asset-templates/social-preview.html`, `tools/render-assets.js`
 - Generated: `public/assets/favicon-180.png`, `favicon-192.png`, `favicon-256.png`, `favicon-512.png`, `social-preview.png`
 - Test: `tests/unit/publicFiles.test.js`, `tests/e2e/metadata.spec.js`
 
 **Interfaces:**
+
 - Consumes: `siteUrl`, `siteName`, `company.*`, `contactEmail` from `siteConfig`.
 - Produces: `npm run render-assets`, which rewrites the PNGs from the templates. Re-run it whenever the favicon SVG or the social preview template changes; the PNGs are committed so the Cloudflare build never needs a browser.
 
@@ -2963,7 +2997,14 @@ Sitemap: https://concision.io/sitemap.xml
         width: 1200px;
         height: 630px;
         background: #ffffff;
-        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        font-family:
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
       }
 
       .card {
@@ -3094,7 +3135,10 @@ In `index.html`, directly after the `<link rel="canonical" ... />` line, add:
 <meta property="og:site_name" content="{{ siteName }}" />
 <meta property="og:locale" content="en_GB" />
 <meta property="og:url" content="{{ siteUrl }}/" />
-<meta property="og:title" content="{{ siteName }} | Software studio in {{ company.baseCity }}, UK" />
+<meta
+  property="og:title"
+  content="{{ siteName }} | Software studio in {{ company.baseCity }}, UK"
+/>
 <meta
   property="og:description"
   content="Focused products and web applications from an independent software studio in {{ company.baseCity }}."
@@ -3106,7 +3150,10 @@ In `index.html`, directly after the `<link rel="canonical" ... />` line, add:
 
 <!-- twitter card -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="{{ siteName }} | Software studio in {{ company.baseCity }}, UK" />
+<meta
+  name="twitter:title"
+  content="{{ siteName }} | Software studio in {{ company.baseCity }}, UK"
+/>
 <meta
   name="twitter:description"
   content="Focused products and web applications from an independent software studio in {{ company.baseCity }}."
@@ -3188,9 +3235,11 @@ Expected: all pass. The browser tab shows the teal "C" icon.
 ### Task 14: CI workflow, README and project instructions
 
 **Files:**
+
 - Create: `.github/workflows/ci.yml`, `README.md`, `CLAUDE.md`
 
 **Interfaces:**
+
 - Consumes: every npm script from Task 1.
 - Produces: the `ci` check that branch protection will require, and the deployment runbook the company follows after the first push.
 
@@ -3237,7 +3286,7 @@ jobs:
 
 `README.md`:
 
-````markdown
+```markdown
 # Concision website
 
 The company website for Concision Ltd, served at [concision.io](https://concision.io).
@@ -3252,36 +3301,36 @@ details live once in `site.config.js` and are injected into the HTML at build ti
 
 ## Commands
 
-| Command                 | What it does                                                  |
-| ----------------------- | ------------------------------------------------------------- |
-| `npm run dev`           | Dev server with live reload (partials included)               |
-| `npm run build`         | Production build into `dist/`, including `_headers`           |
-| `npm run preview`       | Serve `dist/` with the production security headers            |
-| `npm run lint`          | ESLint                                                        |
-| `npm run format`        | Prettier, write                                               |
-| `npm run format:check`  | Prettier, check only                                          |
-| `npm run test:unit`     | Node's test runner over `tests/unit`                          |
+| Command                 | What it does                                                   |
+| ----------------------- | -------------------------------------------------------------- |
+| `npm run dev`           | Dev server with live reload (partials included)                |
+| `npm run build`         | Production build into `dist/`, including `_headers`            |
+| `npm run preview`       | Serve `dist/` with the production security headers             |
+| `npm run lint`          | ESLint                                                         |
+| `npm run format`        | Prettier, write                                                |
+| `npm run format:check`  | Prettier, check only                                           |
+| `npm run test:unit`     | Node's test runner over `tests/unit`                           |
 | `npm run test:e2e`      | Playwright against a fresh build (desktop and mobile Chromium) |
-| `npm run test`          | Unit then browser tests                                       |
-| `npm run render-assets` | Regenerate the favicon PNGs and the social preview image      |
+| `npm run test`          | Unit then browser tests                                        |
+| `npm run render-assets` | Regenerate the favicon PNGs and the social preview image       |
 
 ## Layout
 
-| Path                    | Purpose                                                              |
-| ----------------------- | -------------------------------------------------------------------- |
-| `index.html`            | Home page                                                            |
-| `privacy/index.html`    | Privacy notice                                                       |
-| `partials/`             | Shared head, header and footer, inlined at build time                |
-| `site.config.js`        | Company facts, URLs and contact email: the single source of truth    |
-| `styles/`               | `variables.css` tokens, `base.css`, one file per component           |
-| `scripts/`              | Progressive enhancement: mobile menu, reveal on scroll               |
-| `plugins/`              | Vite plugins: HTML partials, Cloudflare `_headers`                   |
-| `config/`               | Security header rules shared by the build and the preview server     |
-| `public/`               | Static files copied as-is: assets, manifest, redirects, sitemap      |
-| `tools/`                | Asset rendering script and its templates                             |
-| `tests/unit`, `tests/e2e` | Node tests and Playwright specs                                    |
-| `branding/`             | Logo source files supplied by the company                            |
-| `docs/superpowers/`     | Design spec and implementation plan                                  |
+| Path                      | Purpose                                                           |
+| ------------------------- | ----------------------------------------------------------------- |
+| `index.html`              | Home page                                                         |
+| `privacy/index.html`      | Privacy notice                                                    |
+| `partials/`               | Shared head, header and footer, inlined at build time             |
+| `site.config.js`          | Company facts, URLs and contact email: the single source of truth |
+| `styles/`                 | `variables.css` tokens, `base.css`, one file per component        |
+| `scripts/`                | Progressive enhancement: mobile menu, reveal on scroll            |
+| `plugins/`                | Vite plugins: HTML partials, Cloudflare `_headers`                |
+| `config/`                 | Security header rules shared by the build and the preview server  |
+| `public/`                 | Static files copied as-is: assets, manifest, redirects, sitemap   |
+| `tools/`                  | Asset rendering script and its templates                          |
+| `tests/unit`, `tests/e2e` | Node tests and Playwright specs                                   |
+| `branding/`               | Logo source files supplied by the company                         |
+| `docs/superpowers/`       | Design spec and implementation plan                               |
 
 ## How the HTML is assembled
 
@@ -3329,7 +3378,7 @@ One-time setup, in the Cloudflare dashboard for the Concision account:
 
 Work on a branch, open a pull request, let `ci` pass, merge to `main`. Commit messages use
 Conventional Commits, for example `feat(hero): tighten the headline`.
-````
+```
 
 - [ ] **Step 3: Write the project instructions for Claude Code**
 
@@ -3386,11 +3435,13 @@ Expected: nothing under `node_modules/`, `dist/`, `temp/`, `playwright-report/` 
 ### Task 15: Swap in the official logo (run once `branding/` holds the files)
 
 **Files:**
+
 - Create: `public/assets/concision-logo.svg` (copied), optionally `public/assets/concision-mark.svg`
 - Modify: `partials/site-header.html`, `styles/components/site-header.css`, `public/assets/favicon.svg` (if a mark is supplied), `tools/asset-templates/social-preview.html`
 - Regenerate: the PNGs via `npm run render-assets`
 
 **Interfaces:**
+
 - Consumes: the brand link test from Task 6, which passes for both the text wordmark and an image with `alt="{{ siteName }}"`.
 
 - [ ] **Step 1: Check what was supplied**
