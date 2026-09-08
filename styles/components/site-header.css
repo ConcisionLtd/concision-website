@@ -28,6 +28,11 @@
     &:hover {
       color: var(--color-primary-contrast);
     }
+
+    & .site-header__logo {
+      width: auto;
+      height: 2rem;
+    }
   }
 
   /* the button only exists visually once JavaScript has enhanced the header */
