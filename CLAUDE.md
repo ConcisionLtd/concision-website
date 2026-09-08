@@ -13,8 +13,9 @@ runtime dependencies. Spec: `docs/superpowers/specs/2026-09-08-concision-website
 - Company facts (name, number, address, email, dates) live only in `site.config.js`. HTML uses
   `{{ dotted.path }}` placeholders; tests import the config. Never retype these values.
 - Shared markup goes in `partials/` and is pulled in with `<!-- @include partials/x.html -->`.
-- The Content Security Policy is `style-src 'self'; script-src 'self'`: no `style` attributes,
-  no `<style>` blocks, no inline scripts in site HTML. JSON-LD data blocks are fine.
+- The Content Security Policy (`config/securityHeaders.js` is the authority) allows only
+  same-origin styles and scripts plus Cloudflare's analytics origins: no `style` attributes, no
+  `<style>` blocks, no inline scripts in site HTML. JSON-LD data blocks are fine.
 - One CSS file per component in `styles/components/`, imported from `styles/base.css`. Use the
   tokens in `styles/variables.css`. Spacing between siblings uses flex or grid `gap`.
 - JavaScript is progressive enhancement. The site must be complete with it disabled; the tests

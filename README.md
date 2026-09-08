@@ -26,23 +26,26 @@ details live once in `site.config.js` and are injected into the HTML at build ti
 | `npm run render-assets`   | Regenerate the favicon PNGs and the social preview image       |
 | `npm run derive-wordmark` | Rebuild the header wordmark SVG from the logo in `branding/`   |
 
+`npm run test:e2e` reuses a preview server already running on port 4173 (outside CI), so stop any
+stale one first or the tests run against an old build.
+
 ## Layout
 
-| Path                      | Purpose                                                           |
-| ------------------------- | ----------------------------------------------------------------- |
-| `index.html`              | Home page                                                         |
-| `privacy/index.html`      | Privacy notice                                                    |
-| `partials/`               | Shared head, header and footer, inlined at build time             |
-| `site.config.js`          | Company facts, URLs and contact email: the single source of truth |
-| `styles/`                 | `variables.css` tokens, `base.css`, one file per component        |
-| `scripts/`                | Progressive enhancement: mobile menu, reveal on scroll            |
-| `plugins/`                | Vite plugins: HTML partials, Cloudflare `_headers`                |
-| `config/`                 | Security header rules shared by the build and the preview server  |
-| `public/`                 | Static files copied as-is: assets, manifest, redirects, sitemap   |
-| `tools/`                  | Asset rendering script and its templates                          |
-| `tests/unit`, `tests/e2e` | Node tests and Playwright specs                                   |
-| `branding/`               | Logo source files supplied by the company                         |
-| `docs/superpowers/`       | Design spec and implementation plan                               |
+| Path                      | Purpose                                                                                        |
+| ------------------------- | ---------------------------------------------------------------------------------------------- |
+| `index.html`              | Home page                                                                                      |
+| `privacy/index.html`      | Privacy notice                                                                                 |
+| `partials/`               | Shared head, header and footer, inlined at build time                                          |
+| `site.config.js`          | Company facts, URLs and contact email: the single source of truth                              |
+| `styles/`                 | `variables.css` tokens, `base.css`, one file per component                                     |
+| `scripts/`                | Progressive enhancement: mobile menu, reveal on scroll                                         |
+| `plugins/`                | Vite plugins: HTML partials, Cloudflare `_headers`                                             |
+| `config/`                 | Security header rules shared by the build and the preview server                               |
+| `public/`                 | Static files copied as-is: `static/` (logos, icons, social preview), manifest, sitemap, robots |
+| `tools/`                  | Asset rendering script and its templates                                                       |
+| `tests/unit`, `tests/e2e` | Node tests and Playwright specs                                                                |
+| `branding/`               | Logo source files supplied by the company                                                      |
+| `docs/superpowers/`       | Design spec and implementation plan                                                            |
 
 ## How the HTML is assembled
 
@@ -55,14 +58,17 @@ An unknown placeholder or a missing partial fails the build.
 `config/securityHeaders.js` defines the Content Security Policy and cache rules. The build writes
 them to `dist/_headers` for Cloudflare Pages, and `vite preview` serves them too, so the browser
 tests run under the real policy. Inline styles and inline scripts are not allowed by the policy.
+`/assets/` holds only Vite's hashed bundle and is cached as immutable; committed files under
+`/static/` are cached for a day.
 
 ## Assets
 
-`branding/` holds the logo and icon mark supplied by the company. `public/assets/concision-logo.svg`
-is a copy of the logo. `npm run derive-wordmark` writes `public/assets/concision-wordmark.svg`, the
-logo without its tagline line, which the header uses because the tagline is illegible at header
-size. `public/assets/favicon.svg` wraps the icon mark in a teal rounded square. `npm run
-render-assets` renders the favicon to the PNG sizes and composes `social-preview.png` from
+`branding/` holds the logo and icon mark supplied by the company. The header uses
+`public/static/concision-wordmark.svg`, the logo without its tagline line, which `npm run
+derive-wordmark` derives from `branding/concision-logo.svg` because the tagline is illegible at
+header size. The full logo is not served: the social preview template reads it from `branding/`.
+`public/static/favicon.svg` wraps the icon mark in a teal rounded square. `npm run render-assets`
+renders the favicon to the PNG sizes and composes `social-preview.png` from
 `tools/asset-templates/social-preview.html`. Re-run both, and commit the results, whenever the
 branding files change.
 
@@ -73,22 +79,49 @@ other branch gets a preview URL. Nothing in the repo holds a token.
 
 One-time setup, in the Cloudflare dashboard for the Concision account:
 
-1. **Workers & Pages → Create → Pages → Connect to Git.** Choose `ConcisionLtd/concision-website`.
-2. **Build settings.** Framework preset: None. Build command: `npm run build`. Build output
+1. **Create the repository.** GitHub → New repository, owner `ConcisionLtd`, name
+   `concision-website`, public, no template. Push this branch, then merge it to `main`.
+2. **Authorise Cloudflare's GitHub app** for the `ConcisionLtd` organisation. This is only needed
+   the first time you connect a repository from the organisation; Cloudflare prompts for it
+   during the next step.
+3. **Workers & Pages → Create → Pages → Connect to Git.** Choose `ConcisionLtd/concision-website`.
+4. **Build settings.** Framework preset: None. Build command: `npm run build`. Build output
    directory: `dist`. Root directory: `/`. No environment variables. Node comes from `.nvmrc`.
-3. **Deploy** and confirm the `*.pages.dev` URL renders the site.
-4. **Remove the old redirect.** In the `concision.io` zone, delete the rule that redirects the
+5. **Deploy** and confirm the `*.pages.dev` URL renders the site.
+6. **Remove the old redirect.** In the `concision.io` zone, delete the rule that redirects the
    domain to nudgesupport.com (Rules → Redirect Rules, or Bulk Redirects, or Page Rules,
    wherever it lives) and any placeholder DNS records it relied on for `@` and `www`.
-5. **Custom domains.** In the Pages project, Custom domains → Set up a custom domain: add
-   `concision.io`, then `www.concision.io`. Cloudflare creates the DNS records. `_redirects`
-   sends `www` to the apex.
-6. **Analytics.** In the Pages project, Metrics → Web Analytics → Enable. The beacon is injected
-   at the edge and is already allowed by the Content Security Policy.
-7. **Check** `https://concision.io`, `https://www.concision.io` (redirects), `/privacy/`, and the
-   response headers (`curl -I https://concision.io`).
-8. **Protect `main`.** In the GitHub repo, Settings → Branches → add a rule for `main`: require a
-   pull request and require the `ci` status check. No force pushes.
+7. **Custom domains.** In the Pages project, Custom domains → Set up a custom domain: add
+   `concision.io`, then `www.concision.io`. Cloudflare creates the DNS records.
+8. **Redirect `www` to the apex.** In the `concision.io` zone: Rules → Redirect Rules → Create
+   rule. Expression `(http.host eq "www.concision.io")`; type Dynamic; expression
+   `concat("https://concision.io", http.request.uri.path)`; status 301; preserve query string on.
+   Pages cannot do this from a `_redirects` file.
+9. **Turn off Email Address Obfuscation.** Zone → Scrape Shield → Email Address Obfuscation →
+   Off. Cloudflare enables it by default and it rewrites `mailto:` links and visible addresses in
+   the served HTML, which would hide the contact email the site exists to show.
+10. **HTTPS.** Zone → SSL/TLS → Edge Certificates: Always Use HTTPS on, and enable HSTS (max-age
+    6 months, include subdomains only if every subdomain is on HTTPS).
+11. **Analytics.** In the Pages project, Metrics → Web Analytics → Enable. The beacon is injected
+    at the edge and is already allowed by the Content Security Policy.
+12. **Check.**
+    - `https://concision.io` renders, and `https://www.concision.io/privacy/` redirects to
+      `https://concision.io/privacy/`.
+    - `curl -sI https://concision.io | grep -i content-security-policy` shows the policy.
+    - `curl -s https://concision.io | grep -c hello@concision.io` prints at least 2: the contact
+      button and the footer.
+13. **Protect `main`.** In the GitHub repo, Settings → Branches → add a rule for `main`: require a
+    pull request and require the `ci` status check. No force pushes.
+
+## Production differs from preview
+
+- Cloudflare may inject the analytics beacon, and, if Email Address Obfuscation is left on,
+  rewrite the email addresses in the served HTML (Scrape Shield).
+- `vite preview` applies only the `/*` block of `_headers`; the per-path cache rules are not
+  served locally.
+- Pages normalises `/privacy` to `/privacy/` with a 308, while the preview server returns 404 for
+  the slash-less path.
+- The `www` to apex redirect is a zone rule and does not exist locally.
 
 ## Contributing
 
