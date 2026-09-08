@@ -13,7 +13,25 @@
   </head>
   <body>
     <!-- @include partials/site-header.html -->
-    <main id="main" class="page-main"></main>
+    <main id="main" class="page-main">
+      <section class="container hero" aria-labelledby="hero-heading">
+        <div class="hero__content">
+          <h1 id="hero-heading" class="hero__title">
+            Software that cuts the nonsense<span class="hero__accent">.</span>
+          </h1>
+          <p class="hero__lead">
+            Most business software is bloated, over-complicated and a chore to use. {{
+            company.tradingName }} is an independent software studio in {{ company.baseCity }} that
+            builds the opposite: focused products and web applications that do the job and get out
+            of your way.
+          </p>
+          <div class="hero__actions">
+            <a class="button button--primary" href="#products">See our products</a>
+            <a class="button button--secondary" href="#contact">Work with us</a>
+          </div>
+        </div>
+      </section>
+    </main>
     <!-- @include partials/site-footer.html -->
     <script type="module" src="/scripts/main.js"></script>
   </body>
