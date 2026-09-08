@@ -17,10 +17,12 @@ export default defineConfig({
   projects: [
     {
       name: 'desktop-chromium',
+      grepInvert: /@mobile/,
       use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 800 } },
     },
     {
       name: 'mobile-chromium',
+      grepInvert: /@desktop/,
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 375, height: 812 },

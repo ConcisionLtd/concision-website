@@ -1,11 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { siteConfig } from '../../site.config.js';
 
-const MOBILE_BREAKPOINT = 768;
 const mainNav = (page) => page.getByRole('navigation', { name: 'Main' });
 const menuButton = (page) => page.getByRole('button', { name: 'Menu' });
-const isMobileViewport = ({ viewport }) => viewport.width < MOBILE_BREAKPOINT;
-const isDesktopViewport = ({ viewport }) => viewport.width >= MOBILE_BREAKPOINT;
 
 test('the brand link is named after the company and goes home', async ({ page }) => {
   await page.goto('/privacy/');
@@ -13,9 +10,7 @@ test('the brand link is named after the company and goes home', async ({ page })
   await expect(brandLink).toHaveAttribute('href', '/');
 });
 
-test.describe('mobile menu', () => {
-  test.skip(isDesktopViewport, 'mobile viewports only');
-
+test.describe('mobile menu', { tag: '@mobile' }, () => {
   test('is collapsed until the menu button opens it', async ({ page }) => {
     await page.goto('/');
     await expect(mainNav(page)).toBeHidden();
@@ -59,9 +54,7 @@ test.describe('mobile menu', () => {
   });
 });
 
-test.describe('desktop navigation', () => {
-  test.skip(isMobileViewport, 'desktop viewports only');
-
+test.describe('desktop navigation', { tag: '@desktop' }, () => {
   test('shows the links inline and no menu button', async ({ page }) => {
     await page.goto('/');
     await expect(mainNav(page)).toBeVisible();
