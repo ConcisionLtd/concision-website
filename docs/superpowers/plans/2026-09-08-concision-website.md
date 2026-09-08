@@ -12,14 +12,7 @@
 
 ## Global Constraints
 
-- **Commits.** For this project the company has asked for commits as work progresses (overriding their usual wait-for-approval rule). Every task ends with the full checks passing and then one commit on the current feature branch. Use a Conventional Commit subject with a short scope, for example `feat(header): add sticky header and mobile menu`, a body line or two if useful, then end the message with these two trailer lines exactly:
-
-  ```text
-  Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-  Claude-Session: https://claude.ai/code/session_01MWzWmMX7n5ZKgprF3TqTzy
-  ```
-
-  Never push. Never touch `main`. Stage only the task's files (`git add` the paths you created or changed; never `git add -A` blindly), and never commit `node_modules/`, `dist/`, `temp/`, `playwright-report/` or `test-results/`.
+- **Commits.** For this project the company has asked for commits as work progresses (overriding their usual wait-for-approval rule). Every task ends with the full checks passing and then one commit on the current feature branch, with a Conventional Commit subject and a short scope, for example `feat(header): add sticky header and mobile menu`. Never add `Co-Authored-By` lines or session links to commits or PR descriptions (project rule in CLAUDE.md). Never push. Never touch `main`. Stage only the task's files. Stage only the task's files (`git add` the paths you created or changed; never `git add -A` blindly), and never commit `node_modules/`, `dist/`, `temp/`, `playwright-report/` or `test-results/`.
 
 - Node 20 (`.nvmrc` contains `20`). `package.json` has `"type": "module"`; every `.js` file is an ES module.
 - Development dependencies only: `vite`, `@playwright/test`, `eslint`, `@eslint/js`, `globals`, `prettier`. No runtime dependencies, no icon fonts, no web fonts, no CDN scripts or styles.
