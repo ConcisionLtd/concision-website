@@ -33,6 +33,7 @@ stale one first or the tests run against an old build.
 | Path                      | Purpose                                                                                        |
 | ------------------------- | ---------------------------------------------------------------------------------------------- |
 | `index.html`              | Home page                                                                                      |
+| `404.html`                | Not-found page; Pages serves it with a 404 status for unknown paths                            |
 | `privacy/index.html`      | Privacy notice                                                                                 |
 | `partials/`               | Shared head, header and footer, inlined at build time                                          |
 | `site.config.js`          | Company facts, URLs and contact email: the single source of truth                              |
@@ -120,6 +121,8 @@ One-time setup, in the Cloudflare dashboard for the Concision account:
 - Pages normalises `/privacy` to `/privacy/` with a 308, while the preview server returns 404 for
   the slash-less path.
 - The `www` to apex redirect is a zone rule and does not exist locally.
+- Pages serves `404.html` with a 404 status for unknown paths; without that file it would serve
+  the home page with a 200. The preview server returns a bare 404 instead.
 
 ## Contributing
 
