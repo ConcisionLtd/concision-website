@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { siteConfig } from '../../site.config.js';
 
-const SOCIAL_PREVIEW_URL = `${siteConfig.siteUrl}/assets/social-preview.png`;
+const SOCIAL_PREVIEW_URL = `${siteConfig.siteUrl}/static/social-preview.png`;
 const IGNORED_REQUEST_PATHS = ['/favicon.ico'];
 const PUBLIC_FILES = [
-  { path: '/assets/favicon.svg', contentType: /image\/svg\+xml/ },
-  { path: '/assets/favicon-180.png', contentType: /image\/png/ },
-  { path: '/assets/favicon-256.png', contentType: /image\/png/ },
-  { path: '/assets/social-preview.png', contentType: /image\/png/ },
+  { path: '/static/favicon.svg', contentType: /image\/svg\+xml/ },
+  { path: '/static/favicon-180.png', contentType: /image\/png/ },
+  { path: '/static/favicon-256.png', contentType: /image\/png/ },
+  { path: '/static/social-preview.png', contentType: /image\/png/ },
   { path: '/manifest.json', contentType: /json/ },
   { path: '/sitemap.xml', contentType: /xml/ },
   { path: '/robots.txt', contentType: /text\/plain/ },

@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const wordmarkPath = path.resolve(
   import.meta.dirname,
-  '../../public/assets/concision-wordmark.svg'
+  '../../public/static/concision-wordmark.svg'
 );
 const TAGLINE_FILL = '#9CA3AF';
 const WORDMARK_FILLS = ['#757A83', '#16B3B9'];

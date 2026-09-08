@@ -3,7 +3,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const SOURCE_PATH = path.resolve(import.meta.dirname, '../branding/concision-logo.svg');
-const OUTPUT_PATH = path.resolve(import.meta.dirname, '../public/assets/concision-wordmark.svg');
+const OUTPUT_PATH = path.resolve(import.meta.dirname, '../public/static/concision-wordmark.svg');
 const TAGLINE_FILL = '#9CA3AF';
 const TAGLINE_PATH_PATTERN = new RegExp(`<path[^>]*fill="${TAGLINE_FILL}"[^>]*/>\\s*`);
 const SVG_OPEN_TAG_PATTERN = /<svg[^>]*>/;

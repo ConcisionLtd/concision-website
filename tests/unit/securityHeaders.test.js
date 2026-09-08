@@ -29,7 +29,7 @@ test('the global rule carries a CSP that allows Cloudflare Web Analytics and not
 
 test('every page and the hashed assets have a cache rule', () => {
   const paths = securityHeaderRules.map((rule) => rule.path);
-  assert.deepEqual(paths, ['/*', '/', '/privacy/', '/assets/*']);
+  assert.deepEqual(paths, ['/*', '/', '/privacy/', '/assets/*', '/static/*']);
 });
 
 test('the plugin emits _headers built from the rules it is given', () => {

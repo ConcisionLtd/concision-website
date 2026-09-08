@@ -2,7 +2,7 @@ import { chromium } from '@playwright/test';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 
-const OUTPUT_DIRECTORY = path.resolve(import.meta.dirname, '../public/assets');
+const OUTPUT_DIRECTORY = path.resolve(import.meta.dirname, '../public/static');
 const TEMPLATES_DIRECTORY = path.resolve(import.meta.dirname, 'asset-templates');
 const FAVICON_TEMPLATE = 'favicon.html';
 const SOCIAL_PREVIEW_TEMPLATE = 'social-preview.html';

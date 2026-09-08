@@ -2,6 +2,7 @@
 const CLOUDFLARE_INSIGHTS_SCRIPT_ORIGIN = 'https://static.cloudflareinsights.com';
 const CLOUDFLARE_INSIGHTS_BEACON_ORIGIN = 'https://cloudflareinsights.com';
 const ONE_YEAR_IN_SECONDS = 31536000;
+const ONE_DAY_IN_SECONDS = 86400;
 
 export const GLOBAL_PATH = '/*';
 
@@ -36,6 +37,7 @@ export const securityHeaderRules = [
     path: '/assets/*',
     headers: { 'Cache-Control': `public, max-age=${ONE_YEAR_IN_SECONDS}, immutable` },
   },
+  { path: '/static/*', headers: { 'Cache-Control': `public, max-age=${ONE_DAY_IN_SECONDS}` } },
 ];
 
 export const globalHeaders = securityHeaderRules.find((rule) => rule.path === GLOBAL_PATH).headers;
