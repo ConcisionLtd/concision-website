@@ -1,0 +1,15 @@
+/* only when JavaScript is running and the visitor has not asked for reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity var(--duration-reveal) var(--easing-standard),
+      transform var(--duration-reveal) var(--easing-standard);
+  }
+
+  .js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
