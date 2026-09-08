@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { siteConfig } from '../../site.config.js';
 
 const ANCHOR_LINK_SELECTOR = 'a[href*="#"]';
+const CONTACT_SECTION_SELECTOR = '#contact';
 
 const readAnchorIds = (locator) =>
   locator.evaluateAll((links) =>
@@ -10,14 +11,14 @@ const readAnchorIds = (locator) =>
 
 test('the contact button is a mailto link to the company address', async ({ page }) => {
   await page.goto('/');
-  const contact = page.locator('#contact');
+  const contact = page.locator(CONTACT_SECTION_SELECTOR);
   const emailButton = contact.getByRole('link', { name: siteConfig.contactEmail });
   await expect(emailButton).toHaveAttribute('href', `mailto:${siteConfig.contactEmail}`);
 });
 
 test('the contact section labels the London address as the registered office', async ({ page }) => {
   await page.goto('/');
-  const contact = page.locator('#contact');
+  const contact = page.locator(CONTACT_SECTION_SELECTOR);
   await expect(contact).toContainText('Registered office');
   await expect(contact).toContainText(siteConfig.company.registeredOffice.postcode);
   await expect(contact).not.toContainText('our office');

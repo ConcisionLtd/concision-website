@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { siteConfig } from '../../site.config.js';
 
+const HERO_SELECTOR = '.hero';
+
 test('the hero carries the single h1 and both calls to action', async ({ page }) => {
   await page.goto('/');
   const headings = page.getByRole('heading', { level: 1 });
@@ -18,5 +20,5 @@ test('the hero carries the single h1 and both calls to action', async ({ page })
 
 test('the hero says where the company works from', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('.hero')).toContainText(siteConfig.company.baseCity);
+  await expect(page.locator(HERO_SELECTOR)).toContainText(siteConfig.company.baseCity);
 });

@@ -13,3 +13,11 @@
     transform: none;
   }
 }
+
+/* a printed page shows everything, whatever the scroll position was */
+@media print {
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
