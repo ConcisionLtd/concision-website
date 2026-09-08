@@ -1,6 +1,7 @@
 node_modules/
 dist/
-.DS_Store
 temp/
 playwright-report/
 test-results/
+package-lock.json
+tests/unit/fixtures/
