@@ -7,7 +7,7 @@ test('the hero carries the single h1 and both calls to action', async ({ page })
   await page.goto('/');
   const headings = page.getByRole('heading', { level: 1 });
   await expect(headings).toHaveCount(1);
-  await expect(headings).toContainText('enough of complicated');
+  await expect(headings).toContainText('tired of complicated');
   await expect(page.getByRole('link', { name: 'See our products' })).toHaveAttribute(
     'href',
     '#products'

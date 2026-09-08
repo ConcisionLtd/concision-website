@@ -28,9 +28,4 @@
     margin: 0;
     padding-left: 1.25rem;
   }
-
-  & strong {
-    color: var(--color-text-heading);
-    font-weight: var(--font-weight-medium);
-  }
 }

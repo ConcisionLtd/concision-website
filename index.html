@@ -74,16 +74,21 @@
       <section class="container hero" aria-labelledby="hero-heading">
         <div class="hero__content">
           <h1 id="hero-heading" class="hero__title">
-            Simple software for people who have had enough of complicated<span class="hero__accent"
+            Simple software for people who are tired of complicated<span class="hero__accent"
               >.</span
             >
           </h1>
-          <p class="hero__lead">
-            Most business software is bloated, over-complicated and a chore to use. {{
-            company.tradingName }} is an independent software studio in {{ company.baseCity }} that
-            builds the opposite: focused products and web applications that do the job and get out
-            of your way.
-          </p>
+          <div class="hero__intro">
+            <p class="hero__lead">
+              Most business software is
+              <strong>bloated, over-complicated and a chore to use</strong>.
+            </p>
+            <p class="hero__lead">
+              {{ company.tradingName }} is an independent software studio in {{ company.baseCity }}.
+              We build the opposite: <strong>focused products and web apps</strong> that do the job
+              and get out of your way.
+            </p>
+          </div>
           <div class="hero__actions">
             <a class="button button--primary" href="#products">See our products</a>
             <a class="button button--secondary" href="#contact">Work with us</a>
@@ -113,8 +118,8 @@
             </h3>
             <p class="product-card__tagline">Customer support for small teams.</p>
             <p>
-              Track questions, feature requests and bugs in one place, without the email threads and
-              spreadsheets.
+              Track <strong>questions, feature requests and bugs</strong> in one place, without the
+              long email threads and outdated spreadsheets.
             </p>
             <a class="product-card__link" href="{{ products.nudge.url }}">Visit nudgesupport.com</a>
           </li>
@@ -126,8 +131,8 @@
             <span class="badge">Coming soon to iOS</span>
             <p class="product-card__tagline">Personal finance by pay period.</p>
             <p>
-              See how much you will have by the time you are next paid, and where your money goes
-              each month.
+              See <strong>how much you will have left by payday</strong>, and
+              <strong>where your money goes</strong> each month.
             </p>
           </li>
         </ul>
@@ -161,9 +166,10 @@
             </svg>
             <h3>Web applications</h3>
             <p>
-              Bespoke web applications and internal tools, designed around how your team actually
-              works. Front end to database, built to be maintained.
+              Bespoke web apps and internal tools, designed around
+              <strong>how your team actually works</strong>.
             </p>
+            <p>Front end to database, built to be easily maintained.</p>
           </li>
           <li class="service-card">
             <svg
@@ -183,7 +189,12 @@
             </svg>
             <h3>Integrations and automation</h3>
             <p>
-              Connect the systems you already use, replace manual re-keying, and let data move on
+              Running your business on <strong>spreadsheets</strong>? They break, go stale, and only
+              one person knows how they work.
+            </p>
+            <p>
+              We replace them with simple tools that
+              <strong>connect to the systems you already use</strong> and keep the data moving on
               its own.
             </p>
           </li>
@@ -206,9 +217,10 @@
             </svg>
             <h3>Consultancy</h3>
             <p>
-              Straight answers on architecture, technical direction and getting a stalled project
-              moving. No jargon, no upsell.
+              <strong>Straight answers</strong> on what to build, how to build it, and how to get a
+              stalled project moving.
             </p>
+            <p>No jargon, no upsell.</p>
           </li>
         </ul>
       </section>
@@ -218,12 +230,12 @@
         </div>
         <div class="about__body">
           <p class="section__lead">
-            {{ company.legalName }} was founded in {{ company.foundingYear }} and works from {{
+            {{ company.legalName }} was founded in {{ company.foundingYear }} and is based in {{
             company.baseCity }}, UK.
           </p>
           <p>
-            The name is a standard as much as a label: say what matters, leave out what doesn't, and
-            hold the software to the same rule.
+            Our name is the point: <strong>say what matters, leave out what doesn't</strong>. We
+            build software the same way.
           </p>
         </div>
       </section>
@@ -237,7 +249,8 @@
           <div class="section__header">
             <h2 id="contact-heading">Contact</h2>
             <p class="section__lead">
-              Got a project, or a tool your team hates using? Tell us about it.
+              Got a <strong>project</strong>, or a <strong>tool your team hates using</strong>? Tell
+              us about it.
             </p>
           </div>
           <a class="button button--primary" href="mailto:{{ contactEmail }}">{{ contactEmail }}</a>

@@ -100,6 +100,12 @@ address {
   font-style: normal;
 }
 
+/* scan anchors: the key words in a paragraph */
+strong {
+  color: var(--color-text-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
 /***** accessibility *****/
 a:focus-visible,
 button:focus-visible {

@@ -17,5 +17,5 @@ test('the about section says when the company was founded and where it works fro
   const about = page.locator('#about');
   await expect(about.getByRole('heading', { level: 2 })).toHaveText('About');
   await expect(about).toContainText(`founded in ${siteConfig.company.foundingYear}`);
-  await expect(about).toContainText(`works from ${siteConfig.company.baseCity}`);
+  await expect(about).toContainText(`is based in ${siteConfig.company.baseCity}`);
 });
