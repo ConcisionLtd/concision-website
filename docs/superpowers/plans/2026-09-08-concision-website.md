@@ -3598,3 +3598,4 @@ The final whole-branch review found defects in the spec's Cloudflare assumptions
 - New `tests/e2e/headers.spec.js`: `dist/_headers` matches `formatHeadersFile(securityHeaderRules)` after the build, and the served Content-Security-Policy equals the configured one. Layout spec adds 320 and 1920.
 - Selector constants in `contact.spec.js` and `hero.spec.js`.
 - README: runbook steps for creating the repo and authorising Cloudflare's GitHub app, the Redirect Rule, Email Address Obfuscation off, HSTS, a "production differs from preview" section, and a note on `reuseExistingServer`. CLAUDE.md names the full CSP source.
+- Pre-push review decisions: hero headline is candidate 4 ("Simple software for people who have had enough of complicated."); Node pinned to 22; favicon background is the brand teal `#32AFA9` (the logo's `#16B3B9` is a Figma error the company will correct).

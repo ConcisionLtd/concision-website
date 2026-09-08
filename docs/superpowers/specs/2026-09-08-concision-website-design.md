@@ -71,7 +71,7 @@ Vite as the dev server and multi-page builder, plain HTML, CSS and JavaScript, n
 | `eslint`, `@eslint/js`, `globals` | Linting (same flat config style as Nudge)    |
 | `prettier`                        | Formatting (same `.prettierrc` as Nudge)     |
 
-Node 20 LTS, pinned by `.nvmrc`, used locally, in CI and by Cloudflare Pages. The package is `"type": "module"`; every script, plugin and test is an ES module. Unit tests use Node's built-in test runner, so no test framework is installed.
+Node 22 LTS, pinned by `.nvmrc`, used in CI and by Cloudflare Pages (chosen at the pre-push review; Node 20 is past end of life). The package is `"type": "module"`; every script, plugin and test is an ES module. Unit tests use Node's built-in test runner, so no test framework is installed.
 
 No icon font. Any icons are inline SVG. No web fonts. The system font stack is used deliberately for the Apple-like feel and zero font loading.
 
@@ -203,7 +203,7 @@ Logo (links to `/`), then Products, Services, About, Contact as anchor links, th
 
 ### 5.2 Hero
 
-Headline candidates, to be chosen at review. The build uses the first:
+Headline chosen at the pre-push review: candidate 4. The candidates were:
 
 1. Software that cuts the nonsense.
 2. Cut the nonsense.
@@ -301,7 +301,7 @@ Clean, minimal, Apple-like. White ground, near-black type, teal as the single ac
 ## 7. Assets
 
 - **Company logo.** Supplied by the company as SVG in `branding/` (`concision-logo.svg`, a wordmark with a tagline line beneath; `concision-mark.svg`, the icon). The header uses `public/static/concision-wordmark.svg`, derived from the logo by `npm run derive-wordmark` (the tagline line is illegible at header size). The full logo is not served; the social preview template reads it from `branding/`.
-- **SVG favicon.** `public/static/favicon.svg` wraps the icon mark, recoloured white, in a rounded square filled with the logo's own teal `#16B3B9` so the icon matches the logo.
+- **SVG favicon.** `public/static/favicon.svg` wraps the icon mark, recoloured white, in a rounded square filled with the brand teal `#32AFA9`. The company confirmed at review that the supplied logo's `#16B3B9` is a Figma error and will supply corrected SVGs.
 - **Nudge logo.** Copied from `nudge-landing-page/public/assets/nudge-logo.svg` to `public/static/nudge-logo.svg`.
 - **Generated PNGs.** `tools/render-assets.js` uses Playwright to render `tools/asset-templates/favicon.html` at 180, 192, 256 and 512 pixels and `social-preview.html` at 1200×630, writing into `public/static/`. The outputs are committed so Cloudflare's build does not need a browser. The script is run by hand when the logo changes and is documented in the README.
 

@@ -7,7 +7,7 @@ details live once in `site.config.js` and are injected into the HTML at build ti
 
 ## Requirements
 
-- Node 20 (see `.nvmrc`)
+- Node 22 (see `.nvmrc`)
 - `npm ci`, then `npx playwright install chromium` for the browser tests and asset rendering
 
 ## Commands
