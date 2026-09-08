@@ -7,24 +7,23 @@ details live once in `site.config.js` and are injected into the HTML at build ti
 
 ## Requirements
 
-- Node 22 (see `.nvmrc`)
+- Node 22 (see `.nvmrc`); the unit test script relies on Node's own glob support, so Node 20 cannot run it
 - `npm ci`, then `npx playwright install chromium` for the browser tests and asset rendering
 
 ## Commands
 
-| Command                   | What it does                                                   |
-| ------------------------- | -------------------------------------------------------------- |
-| `npm run dev`             | Dev server with live reload (partials included)                |
-| `npm run build`           | Production build into `dist/`, including `_headers`            |
-| `npm run preview`         | Serve `dist/` with the production security headers             |
-| `npm run lint`            | ESLint                                                         |
-| `npm run format`          | Prettier, write                                                |
-| `npm run format:check`    | Prettier, check only                                           |
-| `npm run test:unit`       | Node's test runner over `tests/unit`                           |
-| `npm run test:e2e`        | Playwright against a fresh build (desktop and mobile Chromium) |
-| `npm run test`            | Unit then browser tests                                        |
-| `npm run render-assets`   | Regenerate the favicon PNGs and the social preview image       |
-| `npm run derive-wordmark` | Rebuild the header wordmark SVG from the logo in `branding/`   |
+| Command                 | What it does                                                   |
+| ----------------------- | -------------------------------------------------------------- |
+| `npm run dev`           | Dev server with live reload (partials included)                |
+| `npm run build`         | Production build into `dist/`, including `_headers`            |
+| `npm run preview`       | Serve `dist/` with the production security headers             |
+| `npm run lint`          | ESLint                                                         |
+| `npm run format`        | Prettier, write                                                |
+| `npm run format:check`  | Prettier, check only                                           |
+| `npm run test:unit`     | Node's test runner over `tests/unit`                           |
+| `npm run test:e2e`      | Playwright against a fresh build (desktop and mobile Chromium) |
+| `npm run test`          | Unit then browser tests                                        |
+| `npm run render-assets` | Regenerate the favicon PNGs and the social preview image       |
 
 `npm run test:e2e` reuses a preview server already running on port 4173 (outside CI), so stop any
 stale one first or the tests run against an old build.
@@ -63,14 +62,13 @@ tests run under the real policy. Inline styles and inline scripts are not allowe
 
 ## Assets
 
-`branding/` holds the logo and icon mark supplied by the company. The header uses
-`public/static/concision-wordmark.svg`, the logo without its tagline line, which `npm run
-derive-wordmark` derives from `branding/concision-logo.svg` because the tagline is illegible at
-header size. The full logo is not served: the social preview template reads it from `branding/`.
-`public/static/favicon.svg` wraps the icon mark in a teal rounded square. `npm run render-assets`
-renders the favicon to the PNG sizes and composes `social-preview.png` from
-`tools/asset-templates/social-preview.html`. Re-run both, and commit the results, whenever the
-branding files change.
+`branding/` holds the files supplied by the company: the wordmark (`concision-logo.svg`), the
+wordmark with its tagline line (`concision-logo-with-tagline.svg`) and the icon mark
+(`concision-mark.svg`). The header serves a copy of the wordmark from `public/static/`.
+`public/static/favicon.svg` puts the icon mark, in the brand teal, on a white rounded square.
+`npm run render-assets` renders the favicon to the PNG sizes and composes `social-preview.png` from
+`tools/asset-templates/social-preview.html`, which reads the tagline version of the logo from
+`branding/`. Re-run it, and commit the results, whenever the branding files change.
 
 ## Deployment (Cloudflare Pages)
 

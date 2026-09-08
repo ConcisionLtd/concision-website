@@ -71,7 +71,7 @@ Vite as the dev server and multi-page builder, plain HTML, CSS and JavaScript, n
 | `eslint`, `@eslint/js`, `globals` | Linting (same flat config style as Nudge)    |
 | `prettier`                        | Formatting (same `.prettierrc` as Nudge)     |
 
-Node 22 LTS, pinned by `.nvmrc`, used in CI and by Cloudflare Pages (chosen at the pre-push review; Node 20 is past end of life). The package is `"type": "module"`; every script, plugin and test is an ES module. Unit tests use Node's built-in test runner, so no test framework is installed.
+Node 22 LTS, pinned by `.nvmrc`, used locally, in CI and by Cloudflare Pages (chosen at the pre-push review; Node 20 is past end of life). Unit tests are run as `node --test "tests/unit/**/*.test.js"`, a glob that Node itself expands (Node 22 dropped directory arguments). The package is `"type": "module"`; every script, plugin and test is an ES module. Unit tests use Node's built-in test runner, so no test framework is installed.
 
 No icon font. Any icons are inline SVG. No web fonts. The system font stack is used deliberately for the Apple-like feel and zero font loading.
 
@@ -203,14 +203,14 @@ Logo (links to `/`), then Products, Services, About, Contact as anchor links, th
 
 ### 5.2 Hero
 
-Headline chosen at the pre-push review: candidate 4. The candidates were:
+Headline chosen at review: "Simple software for people who are tired of complicated." The original candidates were:
 
 1. Software that cuts the nonsense.
 2. Cut the nonsense.
 3. Less nonsense. Better software.
 4. Simple software for people who have had enough of complicated.
 
-Sub-heading: "Most business software is bloated, over-complicated and a chore to use. Concision is an independent software studio in Leeds that builds the opposite: focused products and web applications that do the job and get out of your way."
+Intro, as two short paragraphs with the key words in bold: "Most business software is **bloated, over-complicated and a chore to use**." then "Concision is an independent software studio in Leeds. We build the opposite: **focused products and web apps** that do the job and get out of your way."
 
 Buttons: "See our products" (`#products`) and "Work with us" (`#contact`).
 
@@ -218,24 +218,24 @@ Buttons: "See our products" (`#products`) and "Work with us" (`#contact`).
 
 Section heading: "Products". Two cards.
 
-- **Nudge.** Logo from `nudge-landing-page/public/assets/nudge-logo.svg` (the newest version). "Customer support for small teams. Track questions, feature requests and bugs in one place, without the email threads and spreadsheets." Link: "Visit nudgesupport.com", opening in the same tab.
-- **Spends.** No logo until one exists; a rounded square in `--color-primary-tint-strong` with an "S" in `--color-primary-strong` stands in. Badge: "Coming soon to iOS". "Personal finance by pay period. See how much you will have by the time you are next paid, and where your money goes each month." No link.
+- **Nudge.** Logo from `nudge-landing-page/public/assets/nudge-logo.svg` (the newest version). "Customer support for small teams. Track **questions, feature requests and bugs** in one place, without the long email threads and outdated spreadsheets." Link: "Visit nudgesupport.com", opening in the same tab.
+- **Spends.** No logo until one exists; a rounded square in `--color-primary-tint-strong` with an "S" in `--color-primary-strong` stands in. Badge: "Coming soon to iOS". "Personal finance by pay period. See **how much you will have left by payday**, and **where your money goes** each month." No link.
 
 ### 5.4 Services
 
 Section heading: "Services". Three items with a short inline SVG icon each.
 
-- **Web applications.** "Bespoke web applications and internal tools, designed around how your team actually works. Front end to database, built to be maintained."
-- **Integrations and automation.** "Connect the systems you already use, replace manual re-keying, and let data move on its own."
-- **Consultancy.** "Straight answers on architecture, technical direction and getting a stalled project moving. No jargon, no upsell."
+- **Web applications.** "Bespoke web apps and internal tools, designed around **how your team actually works**." then "Front end to database, built to be easily maintained."
+- **Integrations and automation.** "Running your business on **spreadsheets**? They break, go stale, and only one person knows how they work." then "We replace them with simple tools that **connect to the systems you already use** and keep the data moving on its own." (Spreadsheets are the main competitor in the small-business market.)
+- **Consultancy.** "**Straight answers** on what to build, how to build it, and how to get a stalled project moving." then "No jargon, no upsell."
 
 ### 5.5 About
 
-Section heading: "About". One paragraph: "Concision Ltd was founded in 2022 and works from Leeds, UK. The name is a standard as much as a label: say what matters, leave out what doesn't, and hold the software to the same rule."
+Section heading: "About". One paragraph: "Concision Ltd was founded in 2022 and is based in Leeds, UK." then "Our name is the point: **say what matters, leave out what doesn't**. We build software the same way."
 
 ### 5.6 Contact
 
-Section heading: "Contact". "Got a project, or a tool your team hates using? Tell us about it." A primary button "hello@concision.io" (`mailto:hello@concision.io`). Beneath it, labelled "Registered office", the registered office address on separate lines.
+Section heading: "Contact". "Got a **project**, or a **tool your team hates using**? Tell us about it." A primary button "hello@concision.io" (`mailto:hello@concision.io`). Beneath it, labelled "Registered office", the registered office address on separate lines.
 
 ### 5.7 Footer
 
@@ -268,7 +268,7 @@ This is legal copy and is flagged for the company's review before publication.
 
 ### 6.1 Direction
 
-Clean, minimal, Apple-like. White ground, near-black type, teal as the single accent. Generous vertical space, large restrained headings, hairline borders instead of shadows, one soft-tinted surface for cards. Nothing decorative that does not carry meaning. Sentence-case headings (Nudge uses lowercase; the company site is slightly more formal).
+Clean, minimal, Apple-like. White ground, near-black type, teal as the single accent. Generous vertical space, large restrained headings, hairline borders instead of shadows, one soft-tinted surface for cards. Nothing decorative that does not carry meaning. Sentence-case headings (Nudge uses lowercase; the company site is slightly more formal). Copy is short, direct and informal, written to be scan-read: two short paragraphs rather than one long one, with the key words of each paragraph in bold (`<strong>`, heading colour, semibold). The privacy notice is exempt from the bolding.
 
 ### 6.2 Tokens (`styles/variables.css`)
 
@@ -300,8 +300,8 @@ Clean, minimal, Apple-like. White ground, near-black type, teal as the single ac
 
 ## 7. Assets
 
-- **Company logo.** Supplied by the company as SVG in `branding/` (`concision-logo.svg`, a wordmark with a tagline line beneath; `concision-mark.svg`, the icon). The header uses `public/static/concision-wordmark.svg`, derived from the logo by `npm run derive-wordmark` (the tagline line is illegible at header size). The full logo is not served; the social preview template reads it from `branding/`.
-- **SVG favicon.** `public/static/favicon.svg` wraps the icon mark, recoloured white, in a rounded square filled with the brand teal `#32AFA9`. The company confirmed at review that the supplied logo's `#16B3B9` is a Figma error and will supply corrected SVGs.
+- **Company logo.** Supplied by the company as SVG in `branding/` (`concision-logo.svg`, a wordmark with a tagline line beneath; `concision-mark.svg`, the icon). The company supplies the wordmark on its own (`concision-logo.svg`, 438×80), the wordmark with its tagline line (`concision-logo-with-tagline.svg`) and the icon mark; the header serves a copy of the wordmark as `public/static/concision-logo.svg` (the tagline line is illegible at header size). The social preview template reads the tagline version from `branding/`.
+- **SVG favicon.** `public/static/favicon.svg` puts the icon mark, in the brand teal `#32AFA9`, on a white rounded square (the company's preference at review).
 - **Nudge logo.** Copied from `nudge-landing-page/public/assets/nudge-logo.svg` to `public/static/nudge-logo.svg`.
 - **Generated PNGs.** `tools/render-assets.js` uses Playwright to render `tools/asset-templates/favicon.html` at 180, 192, 256 and 512 pixels and `social-preview.html` at 1200×630, writing into `public/static/`. The outputs are committed so Cloudflare's build does not need a browser. The script is run by hand when the logo changes and is documented in the README.
 
@@ -343,7 +343,7 @@ The README carries the dashboard steps above in order, with what to check after 
 
 ### 9.2 Browser tests (Playwright, `tests/e2e`)
 
-Run against `vite preview` of the built `dist`, with the real security headers applied. The Playwright `webServer` command is `npm run build && npm run preview`, so `npm run test:e2e` always tests a fresh build. Two projects: Desktop Chromium at 1280×800 and Mobile Chromium at 375×812. WebKit is not required in CI; it can be run locally.
+Run against `vite preview` of the built `dist`, with the real security headers applied. The Playwright `webServer` command is `npm run build && npm run preview`, so `npm run test:e2e` always tests a fresh build. Two projects: Desktop Chromium at 1280×800 and Mobile Chromium at 375×812. Viewport-specific tests are tagged `@mobile` or `@desktop` and each project filters the other tag out with `grepInvert`, so nothing is reported as skipped. WebKit is not required in CI; it can be run locally.
 
 - Company details: both pages' footers contain the legal name, company number, "England and Wales", the registered office and the contact email, with JavaScript disabled.
 - Home JSON-LD parses and carries the company number, legal name and founding date.

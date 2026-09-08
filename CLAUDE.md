@@ -6,7 +6,7 @@ runtime dependencies. Spec: `docs/superpowers/specs/2026-09-08-concision-website
 ## Commands
 
 `npm run dev`, `npm run build`, `npm run lint`, `npm run format`, `npm run test:unit`,
-`npm run test:e2e` (builds first), `npm run render-assets`, `npm run derive-wordmark`.
+`npm run test:e2e` (builds first), `npm run render-assets`.
 
 ## Rules
 
@@ -23,6 +23,7 @@ runtime dependencies. Spec: `docs/superpowers/specs/2026-09-08-concision-website
 - Named constants for selectors, class names, breakpoints and keys. Braces on every `if` except
   a very short `return`. Lowercase one-line comments.
 - Copy: sentence-case headings; the London address is only ever the "Registered office"; the
-  company "works from Leeds".
+  company "is based in Leeds". Copy is short, direct and informal, written to be scan-read: two
+  short paragraphs beat one long one, and the key words in a paragraph are wrapped in `<strong>`.
 - Test first. Unit tests use `node --test`; browser tests use Playwright against the built site.
 - Do not commit unless asked. Temporary files go in `temp/`.
