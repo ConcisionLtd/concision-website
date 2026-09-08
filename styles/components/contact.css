@@ -1,0 +1,28 @@
+.contact {
+  & .contact__panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 2.5rem;
+    border-radius: var(--radius-card);
+    background-color: var(--color-primary-tint);
+
+    @media (min-width: 768px) {
+      padding: 3.5rem;
+    }
+  }
+
+  & .contact__address {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    color: var(--color-text-subtle);
+    font-size: var(--font-size-md);
+  }
+
+  & .contact__address-label {
+    color: var(--color-text-heading);
+    font-weight: var(--font-weight-medium);
+  }
+}

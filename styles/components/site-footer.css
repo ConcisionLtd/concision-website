@@ -1,0 +1,30 @@
+.site-footer {
+  padding-block: 3rem;
+  border-top: 1px solid var(--color-border-muted);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+
+  & .site-footer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  & .site-footer__legal {
+    max-width: 60rem;
+  }
+
+  & .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  & a {
+    color: var(--color-text-subtle);
+
+    &:hover {
+      color: var(--color-text-heading);
+    }
+  }
+}

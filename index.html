@@ -158,6 +158,26 @@
           </p>
         </div>
       </section>
+      <section id="contact" class="container section contact" aria-labelledby="contact-heading">
+        <div class="contact__panel">
+          <div class="section__header">
+            <h2 id="contact-heading">Contact</h2>
+            <p class="section__lead">
+              Got a project, or a tool your team hates using? Tell us about it.
+            </p>
+          </div>
+          <a class="button button--primary" href="mailto:{{ contactEmail }}">{{ contactEmail }}</a>
+          <address class="contact__address">
+            <span class="contact__address-label">Registered office</span>
+            <span>{{ company.legalName }}</span>
+            <span>{{ company.registeredOffice.line1 }}</span>
+            <span>{{ company.registeredOffice.line2 }}</span>
+            <span>{{ company.registeredOffice.city }}</span>
+            <span>{{ company.registeredOffice.postcode }}</span>
+            <span>{{ company.registeredOffice.country }}</span>
+          </address>
+        </div>
+      </section>
     </main>
     <!-- @include partials/site-footer.html -->
     <script type="module" src="/scripts/main.js"></script>
